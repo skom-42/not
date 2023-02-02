@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "265035478290",
+    "project_id": "noty-37daa",
+    "storage_bucket": "noty-37daa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265035478290:android:f9cdf4ed493e3cf1ce6fcb",
+        "android_client_info": {
+          "package_name": "com.noty.app.noty_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "265035478290-l5dhetc0sn9hlteuoo8r0lju77c2l14j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyPUqaugMY2bS-dS7NMaWOHpcOP_A1EnI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265035478290-l5dhetc0sn9hlteuoo8r0lju77c2l14j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "265035478290-80rlg6hkh8elkpejvualijtk9e6vjdji.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.marcelloBorgatti.Noty"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
