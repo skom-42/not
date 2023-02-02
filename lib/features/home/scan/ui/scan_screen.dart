@@ -7,6 +7,9 @@ import 'package:noty_mobile/core_ui/src/theme/app_text_theme.dart';
 import 'package:noty_mobile/core_ui/src/theme/app_theme.dart';
 import 'package:noty_mobile/core_ui/src/widgets/light_button.dart';
 import 'package:noty_mobile/core_ui/src/widgets/page_app_bar.dart';
+import 'package:noty_mobile/data/repositories/chats_repository.dart';
+import 'package:noty_mobile/domain/models/chat_list_item_model.dart';
+import 'package:noty_mobile/features/dialog_screen/ui/dialog_page.dart';
 import 'package:noty_mobile/features/home/scan/bloc/scan_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -21,6 +24,7 @@ class _ScanScreenState extends State<ScanScreen> {
   final qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   bool isLightOn = false;
+  String? plate;
 
   @override
   void dispose() {
@@ -111,13 +115,26 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
-  void onQRViewCreated(QRViewController controller) {
+  void onQRViewCreated(QRViewController c) {
     setState(() {
-      this.controller = controller;
-    });
+      controller = c;
 
-    controller.scannedDataStream.listen((event) {
-      if (event.code != null) {}
+      controller!.resumeCamera();
+    });
+    controller?.scannedDataStream.listen((event) {
+      print('%scannedDataStream% ${event.code}');
+      if (event.code != null && plate == null) {
+        plate = event.code;
+        Future(
+          () async {
+            final ChatListItemModel? chat =
+                await appLocator<ChatRepository>().getChat(plate: event.code!);
+            if (chat != null) {
+              appLocator<AppRouterDelegate>().push(DialogPage(chatModel: chat));
+            }
+          },
+        );
+      }
     });
   }
 }

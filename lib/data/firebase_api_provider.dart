@@ -243,6 +243,7 @@ class FirebaseApiProvider {
           await logOut();
           appLocator<AppRouterDelegate>().push(LoginPage());
         }
+        print('%data% ${data}');
 
         customUser = CustomUser(
           email: data['email'] as String,
@@ -367,7 +368,7 @@ class FirebaseApiProvider {
     return chatItem;
   }
 
-  Future<ChatListItemModel?> getChat({
+  Future<ChatListItemModel> getChat({
     required String plate,
   }) async {
     final CustomUser? recepient = await getUserByPlate(plate: plate.toUpperCase().trim());
@@ -402,7 +403,7 @@ class FirebaseApiProvider {
       }
     }
 
-    return null;
+    return await createChat(plate: plate);
   }
 
   Future<void> blockUser({
