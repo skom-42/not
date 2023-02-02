@@ -163,7 +163,7 @@ class FirebaseApiProvider {
 
   String _getUsername() {
     final String? email = currentUser?.email;
-    return email == null ? "Unknown" : email.split('@').first;
+    return email == null ? "Unknown" : email;
   }
 
   int _getRegistrationDate() {
@@ -339,7 +339,7 @@ class FirebaseApiProvider {
         ),
       );
     }
-    final List<String> users = [_getUsername(), recepient.email.split("@").first ?? ''];
+    final List<String> users = [_getUsername(), recepient.email];
     final Map<String, dynamic> data = {
       "users": users.toSet().toList(),
       "readReceipt": [],
@@ -379,7 +379,7 @@ class FirebaseApiProvider {
     for (final doc in db.docs) {
       final ChatModel chat = ChatModel.fromJson(doc.data());
 
-      if (chat.users.contains(recepient.email.split('@').first)) {
+      if (chat.users.contains(recepient.email)) {
         try {
           chatItem = ChatListItemModel(
             docId: doc.id,
@@ -403,8 +403,7 @@ class FirebaseApiProvider {
     print('%chat.docId% ${chat.docId}');
     _firestoreInstance.collection("Chats").doc(chat.docId).update({
       "blocked": FieldValue.arrayUnion([_getUsername()]),
-      "deleted":
-          FieldValue.arrayUnion([_getUsername(), chat.toUser?.email.split('@')[0] ?? "Unknown"])
+      "deleted": FieldValue.arrayUnion([_getUsername(), chat.toUser?.email ?? "Unknown"])
     });
   }
 
