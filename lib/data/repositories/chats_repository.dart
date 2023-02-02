@@ -32,6 +32,12 @@ class ChatRepository {
     return apiProvider.createChat(plate: plate);
   }
 
+  Future<ChatListItemModel?> getChat({
+    required String plate,
+  }) {
+    return apiProvider.getChat(plate: plate);
+  }
+
   Future<void> sendMessage({
     required String message,
     required ChatListItemModel chat,

@@ -80,13 +80,14 @@ class NotificationService {
   }
 
   static Future<void> _onMessageOpenApp(RemoteMessage? message) async {
-    print('%print% ${message?.toMap()}');
     if (message != null) {
       final NotificationMessageData notification =
           NotificationMessageData.fromJson(message.data);
-      final ChatListItemModel chat =
-          await appLocator<ChatRepository>().createChat(plate: notification.plate);
-      appLocator<AppRouterDelegate>().push(DialogPage(chatModel: chat));
+      final ChatListItemModel? chat =
+          await appLocator<ChatRepository>().getChat(plate: notification.plate);
+      if (chat != null) {
+        appLocator<AppRouterDelegate>().push(DialogPage(chatModel: chat));
+      }
     }
   }
 

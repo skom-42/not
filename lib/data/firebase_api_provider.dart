@@ -302,11 +302,11 @@ class FirebaseApiProvider {
         .collection("Chats")
         .where("users", arrayContains: _getUsername());
     db.snapshots().listen((event) async {
-      try {
-        final queryCount = event.docs.length;
-        if (queryCount >= 1) {
-          final List<ChatListItemModel> result = [];
-          for (final doc in event.docs) {
+      final queryCount = event.docs.length;
+      if (queryCount >= 1) {
+        final List<ChatListItemModel> result = [];
+        for (final doc in event.docs) {
+          try {
             final ChatModel chat = ChatModel.fromJson(doc.data());
             if (!(chat.deleted?.contains(_getUsername()) ?? false)) {
               final String? plate = await getUserPlate(
@@ -325,11 +325,11 @@ class FirebaseApiProvider {
                 result.add(chatItem);
               }
             }
+          } catch (e) {
+            print('%getAllChats error% ${e.toString()}');
           }
-          chatStream?.add(result);
         }
-      } catch (e) {
-        print('%getAllChats error% ${e.toString()}');
+        chatStream?.add(result);
       }
     });
     return chatStream!.stream;
@@ -348,7 +348,7 @@ class FirebaseApiProvider {
     }
     final List<String> users = [_getUsername(), recepient.email.split("@").first ?? ''];
     final Map<String, dynamic> data = {
-      "users": users,
+      "users": users.toSet().toList(),
       "readReceipt": [],
       "deleted": [],
     };
@@ -366,6 +366,44 @@ class FirebaseApiProvider {
     return chatItem;
   }
 
+  Future<ChatListItemModel?> getChat({
+    required String plate,
+  }) async {
+    final CustomUser? recepient = await getUserByPlate(plate: plate.toUpperCase().trim());
+    if (recepient == null) {
+      throw CustomException(
+        errorMessage: AppLocalizations.ofGlobalContext(
+          'Plate not found.',
+        ),
+      );
+    }
+    ChatListItemModel chatItem;
+
+    final db = await _firestoreInstance
+        .collection("Chats")
+        .where("users", arrayContains: _getUsername())
+        .get();
+    for (final doc in db.docs) {
+      final ChatModel chat = ChatModel.fromJson(doc.data());
+
+      if (chat.users.contains(recepient.email.split('@').first)) {
+        try {
+          chatItem = ChatListItemModel(
+            docId: doc.id,
+            plate: plate,
+            readReceiptUsers: chat.readReceipt,
+            toUser: recepient,
+          );
+          return chatItem;
+        } catch (e) {
+          print('%getChat error% ${e.toString()}');
+        }
+      }
+    }
+
+    return null;
+  }
+
   Future<void> blockUser({
     required ChatListItemModel chat,
   }) async {
@@ -380,7 +418,7 @@ class FirebaseApiProvider {
     required String message,
     required ChatListItemModel chat,
   }) async {
-    _firestoreInstance.collection("Chats").doc(chat.docId ?? "").update({"deleted": []});
+    _firestoreInstance.collection("Chats").doc(chat.docId).update({"deleted": []});
     var notifPayload = {
       "to": chat.toUser?.notificationToken ?? "",
       "data": {
@@ -389,7 +427,7 @@ class FirebaseApiProvider {
         "subtitle": _getUsername(),
         "badge": 1,
         "sound": "owl.mp3",
-        "plate": chat.toUser?.plate ?? "",
+        "plate": customUser?.plate ?? "",
       },
       "notification": {
         "title": "Noty",
@@ -397,7 +435,7 @@ class FirebaseApiProvider {
         "subtitle": _getUsername(),
         "badge": 1,
         "sound": "owl.mp3",
-        "plate": chat.toUser?.plate ?? "",
+        "plate": customUser?.plate ?? "",
         "android": {
           'channelId': "noty_mobile",
           'priority': 1,
@@ -466,11 +504,5 @@ class FirebaseApiProvider {
     }
 
     return chatMessagesStream!.stream;
-    //  else {
-    //   await createNewChat();
-    //
-    // }
-    // }
-    // createNewChat();
   }
 }

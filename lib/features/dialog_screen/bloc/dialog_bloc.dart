@@ -27,7 +27,6 @@ class DialogBloc extends Bloc<DialogEvent, DialogState> {
     on<NormalEvent>(_toNormalState);
     on<BlockUser>(_blockUser);
     on<ReportChat>(_reportChat);
-
     add(LoadData());
   }
 
@@ -35,7 +34,9 @@ class DialogBloc extends Bloc<DialogEvent, DialogState> {
     try {
       final messages =
           await _chatRepository.getChatMessages(chatListItemModel: _chatModel);
+
       messages.listen((e) {
+        print('%messages% ${e}');
         add(UpdatedData(e));
       });
       emit(DialogState(plate: _chatModel.plate, messages: []));
