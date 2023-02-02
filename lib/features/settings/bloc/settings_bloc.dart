@@ -1,21 +1,31 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:navigation/navigation.dart';
+import 'package:noty_mobile/core/localization/localization.dart';
 import 'package:noty_mobile/core/utils/url_launcher.dart';
+import 'package:noty_mobile/core_ui/src/dialogs/android_dialog/dialog_page.dart';
 import 'package:noty_mobile/core_ui/src/dialogs/dialog_for_result/dialog_for_result_page.dart';
+import 'package:noty_mobile/data/repositories/auth_repository.dart';
 import 'package:noty_mobile/features/auth/forgot_password/ui/forgot_password_page.dart';
+import 'package:noty_mobile/features/auth/login%20/ui/login_page.dart';
+import 'package:noty_mobile/features/home/home_page.dart';
 import 'package:noty_mobile/features/update_profile/ui/update_account_page.dart';
 
-part 'settings_event.dart';
+import '../../../core_ui/src/dialogs/disapearing_dialog/disapearing_dialog_page.dart';
+import '../../verify_account/ui/verify_account_page.dart';
 
+part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final AppRouterDelegate _appRouter;
+  final AuthRepository _authRepository;
 
   SettingsBloc({
     required AppRouterDelegate appRouter,
+    required AuthRepository authRepository,
   })  : _appRouter = appRouter,
+        _authRepository = authRepository,
         super(ContentState()) {
     on<UpdateProfile>(_onUpdateAccount);
     on<VerifyAccount>(_onVerifyAccount);
@@ -46,7 +56,35 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onVerifyAccount(
     VerifyAccount event,
     Emitter<SettingsState> emit,
-  ) async {}
+  ) async {
+    try {
+      final user = await _authRepository.getUserAttributes();
+      if (user?.isVerified != null && user!.isVerified) {
+        _appRouter.push(
+          DisapearingDialogPage(
+            title: AppLocalizations.ofGlobalContext('You are now verified!'),
+            message: '',
+          ),
+        );
+      } else {
+        final bool? isVereficationPassed =
+            await _appRouter.pushForResult(VerifyAccountPage());
+        if (isVereficationPassed != null && isVereficationPassed) {
+          _appRouter.push(DisapearingDialogPage(
+            title: AppLocalizations.ofGlobalContext('Done'),
+            message: AppLocalizations.ofGlobalContext('You are now verified!'),
+          ));
+        }
+      }
+    } catch (e) {
+      _appRouter.push(
+        DefaultDialog(
+          title: 'Oh oh',
+          message: e.toString(),
+        ),
+      );
+    }
+  }
 
   Future<void> _onChangePassword(
     ChangePassword event,
@@ -98,7 +136,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onLogout(
     Logout event,
     Emitter<SettingsState> emit,
-  ) async {}
+  ) async {
+    await _authRepository.logOut();
+    _appRouter.popUntilPage(DashboardPage());
+    _appRouter.replace(LoginPage());
+  }
 
   Future<void> _onDeleteAccount(
     DeleteAccount event,
@@ -111,7 +153,33 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       ),
     );
 
-    if (result != null && result) {}
+    if (result != null && result) {
+      try {
+        await _authRepository.deleteUser();
+        _appRouter.push(
+          DefaultDialog(
+            title: AppLocalizations.ofGlobalContext('Done'),
+            message: AppLocalizations.ofGlobalContext(
+                'Your account has been deleted succesfully!'),
+            onOk: () {
+              _appRouter.pop();
+              _appRouter.popUntilPage(DashboardPage());
+              _appRouter.replace(LoginPage());
+            },
+          ),
+        );
+      } on Exception catch (e) {
+        _appRouter.push(
+          DefaultDialog(
+            title: 'Oh oh',
+            message: e.toString(),
+            onOk: () {
+              add(Logout());
+            },
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _onSubscribeToMailList(

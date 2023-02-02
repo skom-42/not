@@ -4,10 +4,12 @@ import 'package:noty_mobile/core_ui/src/dialogs/android_dialog/dialog_screen.dar
 class DefaultDialog extends Page<void> {
   final String title;
   final String message;
+  final Function? onOk;
 
   const DefaultDialog({
     required this.title,
     required this.message,
+    this.onOk,
   });
 
   @override
@@ -19,6 +21,7 @@ class DefaultDialog extends Page<void> {
         return DefaultDialogScreen(
           title: title,
           message: message,
+          onOk: onOk,
         );
       },
     );

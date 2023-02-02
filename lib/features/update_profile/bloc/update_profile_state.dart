@@ -4,4 +4,10 @@ abstract class UpdateProfileState {}
 
 class LoadingState implements UpdateProfileState {}
 
-class ContentState implements UpdateProfileState {}
+class ContentState implements UpdateProfileState {
+  final CustomUser? customUser;
+
+  ContentState({
+    required this.customUser,
+  });
+}

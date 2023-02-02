@@ -1,3 +1,4 @@
+import 'package:easyqrimage/easyqrimage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,10 +15,13 @@ import 'package:noty_mobile/features/home/profile/bloc/profile_bloc.dart';
 import 'package:noty_mobile/features/settings/ui/settings_page.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width / 2 - 100;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: PageAppBar(
@@ -48,8 +52,50 @@ class ProfileScreen extends StatelessWidget {
             if (state is ContentState) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: state.isHasPlate
-                    ? const SizedBox.shrink()
+                child: state.plate != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              AppLocalizations.of(context).value('Profile'),
+                              style: AppTextTheme.poppins30SemiBold
+                                  .copyWith(color: AppTheme.lightColor),
+                            ),
+                          ),
+                          const Spacer(),
+                          Stack(
+                            children: [
+                              Image.asset(
+                                AppIconsTheme.badge,
+                                fit: BoxFit.fill,
+                              ),
+                              Positioned(
+                                bottom: 40,
+                                left: width,
+                                child: EasyQRImage(
+                                  data: state.plate!,
+                                  size: 120,
+                                  backgroundColor: AppTheme.lightColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          AppButton(
+                            text: AppLocalizations.of(context)
+                                .value('Share or print your QR'),
+                            backgroundColor: AppTheme.buttonColor,
+                            onPressed: () {
+                              context.read<ProfileBloc>().add(
+                                    PrintDocument(),
+                                  );
+                            },
+                          ),
+                          const SizedBox(height: 120),
+                        ],
+                      )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -77,7 +123,9 @@ class ProfileScreen extends StatelessWidget {
                             text: AppLocalizations.of(context).value('Add your car'),
                             backgroundColor: AppTheme.buttonColor,
                             onPressed: () {
-                              context.read<ProfileBloc>().add(RouteToAddCarPlate());
+                              context.read<ProfileBloc>().add(
+                                    RouteToAddCarPlate(),
+                                  );
                             },
                           ),
                           const SizedBox(height: 120),
@@ -85,7 +133,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
               );
             } else {
-              return const SizedBox();
+              return const SizedBox.shrink();
             }
           },
         ),
