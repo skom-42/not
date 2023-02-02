@@ -7,12 +7,19 @@ import 'package:noty_mobile/features/verify_account/bloc/verify_account_bloc.dar
 import 'package:noty_mobile/features/verify_account/ui/verify_account_screen.dart';
 
 class VerifyAccountPage extends PageWithScaffoldKey<bool?> {
+  final bool? isNeedVerify;
+
+  VerifyAccountPage({
+    this.isNeedVerify,
+  });
+
   @override
   Route<bool?> createRoute(BuildContext context) => MaterialPageRoute<bool?>(
         builder: (BuildContext context) => BlocProvider<VerifyAccountBloc>(
           create: (BuildContext context) => VerifyAccountBloc(
             appRouter: appLocator<AppRouterDelegate>(),
             authRepository: appLocator<AuthRepository>(),
+            isNeedVerify: isNeedVerify,
           ),
           child: ScaffoldMessenger(
             key: scaffoldKey,

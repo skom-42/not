@@ -15,6 +15,7 @@ import '../../../core_ui/src/dialogs/disapearing_dialog/disapearing_dialog_page.
 import '../../verify_account/ui/verify_account_page.dart';
 
 part 'settings_event.dart';
+
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
@@ -67,8 +68,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           ),
         );
       } else {
-        final bool? isVereficationPassed =
-            await _appRouter.pushForResult(VerifyAccountPage());
+        final bool? isVereficationPassed = await _appRouter.pushForResult(VerifyAccountPage());
         if (isVereficationPassed != null && isVereficationPassed) {
           _appRouter.push(DisapearingDialogPage(
             title: AppLocalizations.ofGlobalContext('Done'),
@@ -159,8 +159,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         _appRouter.push(
           DefaultDialog(
             title: AppLocalizations.ofGlobalContext('Done'),
-            message: AppLocalizations.ofGlobalContext(
-                'Your account has been deleted succesfully!'),
+            message: AppLocalizations.ofGlobalContext('Your account has been deleted succesfully!'),
             onOk: () {
               _appRouter.pop();
               _appRouter.popUntilPage(DashboardPage());

@@ -34,8 +34,7 @@ class FirebaseApiProvider {
     required String surName,
   }) async {
     try {
-      final UserCredential newUser =
-          await _firebaseAuthInstance.createUserWithEmailAndPassword(
+      final UserCredential newUser = await _firebaseAuthInstance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -60,8 +59,7 @@ class FirebaseApiProvider {
 
   Future<void> logIn({required String email, required String password}) async {
     try {
-      final UserCredential userCredential =
-          await _firebaseAuthInstance.signInWithEmailAndPassword(
+      final UserCredential userCredential = await _firebaseAuthInstance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -169,7 +167,7 @@ class FirebaseApiProvider {
   }
 
   int _getRegistrationDate() {
-    return DateTime.now().microsecondsSinceEpoch;
+    return DateTime.now().millisecondsSinceEpoch ~/ 1000;
   }
 
   Future<void> resetPassword({required String email}) async {
@@ -201,10 +199,7 @@ class FirebaseApiProvider {
   }
 
   Future<CustomUser?> getUserByPlate({required String plate}) async {
-    final db = await _firestoreInstance
-        .collection("Users")
-        .where('plate', isEqualTo: plate)
-        .get();
+    final db = await _firestoreInstance.collection("Users").where('plate', isEqualTo: plate).get();
 
     if (db.docs.isNotEmpty) {
       return CustomUser.fromJson(db.docs.first.data());
@@ -274,10 +269,8 @@ class FirebaseApiProvider {
   }
 
   Future<bool> getPlate({String? userName}) async {
-    final DocumentSnapshot result = await _firestoreInstance
-        .collection('Users')
-        .doc(userName ?? _getUsername())
-        .get();
+    final DocumentSnapshot result =
+        await _firestoreInstance.collection('Users').doc(userName ?? _getUsername()).get();
     final Map<String, dynamic> parsedData = result.data() as Map<String, dynamic>;
     final String? plate = parsedData['plate'] as String?;
     return plate != null;
@@ -300,9 +293,7 @@ class FirebaseApiProvider {
     chatStream?.close();
     chatStream = null;
     chatStream = StreamController<List<ChatListItemModel>>();
-    final db = _firestoreInstance
-        .collection("Chats")
-        .where("users", arrayContains: _getUsername());
+    final db = _firestoreInstance.collection("Chats").where("users", arrayContains: _getUsername());
     db.snapshots().listen((event) async {
       final queryCount = event.docs.length;
       if (queryCount >= 1) {
@@ -411,8 +402,8 @@ class FirebaseApiProvider {
   }) async {
     _firestoreInstance.collection("Chats").doc(chat.docId).update({
       "blocked": FieldValue.arrayUnion([_getUsername()]),
-      "deleted": FieldValue.arrayUnion(
-          [_getUsername(), chat.toUser?.email.split('@')[0] ?? "Unknown"])
+      "deleted":
+          FieldValue.arrayUnion([_getUsername(), chat.toUser?.email.split('@')[0] ?? "Unknown"])
     });
   }
 
@@ -482,8 +473,7 @@ class FirebaseApiProvider {
     chatMessagesStream?.close();
     chatMessagesStream = null;
     chatMessagesStream = StreamController<List<ChatMessage>>();
-    final db =
-        await _firestoreInstance.collection("Chats").doc(chatListItemModel.docId).get();
+    final db = await _firestoreInstance.collection("Chats").doc(chatListItemModel.docId).get();
 
     if (db.exists) {
       currentChat = db.reference;

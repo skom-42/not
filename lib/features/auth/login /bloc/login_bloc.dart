@@ -8,6 +8,9 @@ import 'package:noty_mobile/data/custom_exception.dart';
 import 'package:noty_mobile/features/auth/forgot_password/ui/forgot_password_page.dart';
 import 'package:noty_mobile/features/auth/registration/ui/registration_page.dart';
 import 'package:noty_mobile/features/home/home_page.dart';
+import 'package:noty_mobile/features/verify_account/ui/verify_account_page.dart';
+
+import '../../../../domain/models/custom_user.dart';
 
 part 'login_event.dart';
 
@@ -34,12 +37,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _onInitData(InitData event, Emitter<LoginState> emit) async {
     try {
-      // await _authRepository.logOut();
       final bool isLoggedIn = _authRepository.isUserLoggedIn();
       if (isLoggedIn) {
-        _appRouter.replace(
-          DashboardFeature.page(),
-        );
+        final CustomUser? user = await _authRepository.getUserAttributes();
+
+        if (user != null) {
+          final l = user.registrationDate * 1000;
+          final DateTime registrationDate = DateTime.fromMillisecondsSinceEpoch(l);
+          final DateTime additionalDate = registrationDate.add(const Duration(days: 3));
+
+          if (additionalDate.isBefore(DateTime.now()) && !user.isVerified) {
+            _appRouter.replace(VerifyAccountPage(isNeedVerify: true));
+          } else {
+            _appRouter.replace(
+              DashboardFeature.page(),
+            );
+          }
+        }
       } else {
         emit(ContentState());
       }

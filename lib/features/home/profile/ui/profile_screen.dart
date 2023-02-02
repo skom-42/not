@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:easyqrimage/easyqrimage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +16,19 @@ import 'package:noty_mobile/core_ui/src/widgets/page_app_bar.dart';
 import 'package:noty_mobile/data/repositories/auth_repository.dart';
 import 'package:noty_mobile/features/home/profile/bloc/profile_bloc.dart';
 import 'package:noty_mobile/features/settings/ui/settings_page.dart';
+import 'package:screenshot/screenshot.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  ScreenshotController screenshotController = ScreenshotController();
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +95,14 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           const Spacer(),
                           AppButton(
-                            text: AppLocalizations.of(context)
-                                .value('Share or print your QR'),
+                            text: AppLocalizations.of(context).value('Share or print your QR'),
                             backgroundColor: AppTheme.buttonColor,
-                            onPressed: () {
+                            onPressed: () async {
+                              final Image file = await getFile(state.plate!);
                               context.read<ProfileBloc>().add(
-                                    PrintDocument(),
+                                    PrintDocument(
+                                      image: file,
+                                    ),
                                   );
                             },
                           ),
@@ -111,8 +124,7 @@ class ProfileScreen extends StatelessWidget {
                           AppIconsTheme.car,
                           const SizedBox(height: 24),
                           Text(
-                            AppLocalizations.of(context)
-                                .value('You don\'t have any car here yet.'),
+                            AppLocalizations.of(context).value('You don\'t have any car here yet.'),
                             style: AppTextTheme.poppins16Regular.copyWith(
                               color: AppTheme.lightColor,
                             ),
@@ -139,5 +151,17 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<Image> getFile(String plate) async {
+    final Uint8List image = await screenshotController.captureFromWidget(
+      EasyQRImage(
+        data: plate,
+        size: 120,
+        backgroundColor: AppTheme.lightColor,
+      ),
+    );
+
+    return Image.memory(image);
   }
 }

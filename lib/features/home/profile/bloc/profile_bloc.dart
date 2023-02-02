@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:navigation/navigation.dart';
 import 'package:noty_mobile/core_ui/src/theme/app_icon_theme.dart';
@@ -45,15 +49,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onPrintDocument(PrintDocument event, Emitter<ProfileState> emit) async {
-    print(1);
     final doc = pw.Document();
     final image = await imageFromAssetBundle(AppIconsTheme.print);
+    final image2 = await flutterImageProvider(event.image.image);
     doc.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Image(image),
+          return pw.Stack(
+            children: [
+              pw.Image(image),
+              pw.Align(
+                  alignment: pw.Alignment.center,
+                  child: pw.SizedBox(height: 80, width: 80, child: pw.Image(image2)))
+            ],
           );
         },
       ),
