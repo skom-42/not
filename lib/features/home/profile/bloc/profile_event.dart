@@ -5,5 +5,3 @@ abstract class ProfileEvent {}
 class LoadData implements ProfileEvent {}
 
 class RouteToAddCarPlate implements ProfileEvent {}
-
-class PrintDocument implements ProfileEvent {}

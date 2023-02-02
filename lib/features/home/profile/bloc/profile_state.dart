@@ -5,9 +5,9 @@ class ProfileState {}
 class LoadingState implements ProfileState {}
 
 class ContentState implements ProfileState {
-  final String? plate;
+  final bool isHasPlate;
 
-  ContentState({required this.plate});
+  ContentState({required this.isHasPlate});
 }
 
 class ErrorState implements ProfileState {}

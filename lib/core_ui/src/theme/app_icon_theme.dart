@@ -25,6 +25,7 @@ class AppIconsTheme {
   //SignIn keys
   static const String _google = '${_svgPath}google.svg';
   static const String _geerPath = '${_svgPath}geer.svg';
+  static const String _chatLogo = '${_svgPath}logo_chat.png';
 
   static Image get notyLogo => Image.asset(
         _notyPathKey,
@@ -65,4 +66,6 @@ class AppIconsTheme {
   static String get badge => _badgePath;
 
   static String get print => _printPath;
+
+  static String get chatLogo => _chatLogo;
 }

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:navigation/navigation.dart';
 import 'package:noty_mobile/core/di/app_di.dart';
 import 'package:noty_mobile/core/localization/localization.dart';
-import 'package:noty_mobile/core_ui/src/theme/app_icon_theme.dart';
 import 'package:noty_mobile/core_ui/src/theme/app_text_theme.dart';
 import 'package:noty_mobile/core_ui/src/theme/app_theme.dart';
 import 'package:noty_mobile/core_ui/src/widgets/app_background_image.dart';
@@ -55,7 +54,8 @@ class ChatsScreen extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context).value('Messaggi'),
-                        style: AppTextTheme.poppins30SemiBold.copyWith(color: AppTheme.lightColor),
+                        style: AppTextTheme.poppins30SemiBold
+                            .copyWith(color: AppTheme.lightColor),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -63,11 +63,11 @@ class ChatsScreen extends StatelessWidget {
                       child: ListView.separated(
                         itemBuilder: (BuildContext context, int index) {
                           return ChatsListItem(
-                            name: 'SOSI',
+                            name: state.chats[index].plate,
                             onTap: () {
                               context.read<ChatsBloc>().add(
                                     OpenChat(
-                                      plate: 'SOSI',
+                                      chatModel: state.chats[index],
                                     ),
                                   );
                             },
@@ -76,7 +76,7 @@ class ChatsScreen extends StatelessWidget {
                         separatorBuilder: (BuildContext context, int index) {
                           return const AppDivider();
                         },
-                        itemCount: 2,
+                        itemCount: state.chats.length,
                       ),
                     )
                   ],

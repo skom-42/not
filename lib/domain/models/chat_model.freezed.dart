@@ -20,7 +20,8 @@ ChatModel _$ChatModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatModel {
-  List<String> get deleted => throw _privateConstructorUsedError;
+  List<String>? get deleted => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
   List<String> get readReceipt => throw _privateConstructorUsedError;
   List<String> get users => throw _privateConstructorUsedError;
 
@@ -36,7 +37,9 @@ abstract class $ChatModelCopyWith<$Res> {
       _$ChatModelCopyWithImpl<$Res, ChatModel>;
   @useResult
   $Res call(
-      {List<String> deleted, List<String> readReceipt, List<String> users});
+      {List<String>? deleted,
+      @JsonKey(defaultValue: []) List<String> readReceipt,
+      List<String> users});
 }
 
 /// @nodoc
@@ -52,15 +55,15 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deleted = null,
+    Object? deleted = freezed,
     Object? readReceipt = null,
     Object? users = null,
   }) {
     return _then(_value.copyWith(
-      deleted: null == deleted
+      deleted: freezed == deleted
           ? _value.deleted
           : deleted // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String>?,
       readReceipt: null == readReceipt
           ? _value.readReceipt
           : readReceipt // ignore: cast_nullable_to_non_nullable
@@ -81,7 +84,9 @@ abstract class _$$_ChatModelCopyWith<$Res> implements $ChatModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {List<String> deleted, List<String> readReceipt, List<String> users});
+      {List<String>? deleted,
+      @JsonKey(defaultValue: []) List<String> readReceipt,
+      List<String> users});
 }
 
 /// @nodoc
@@ -95,15 +100,15 @@ class __$$_ChatModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deleted = null,
+    Object? deleted = freezed,
     Object? readReceipt = null,
     Object? users = null,
   }) {
     return _then(_$_ChatModel(
-      deleted: null == deleted
+      deleted: freezed == deleted
           ? _value._deleted
           : deleted // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String>?,
       readReceipt: null == readReceipt
           ? _value._readReceipt
           : readReceipt // ignore: cast_nullable_to_non_nullable
@@ -120,8 +125,8 @@ class __$$_ChatModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
   const _$_ChatModel(
-      {required final List<String> deleted,
-      required final List<String> readReceipt,
+      {final List<String>? deleted,
+      @JsonKey(defaultValue: []) required final List<String> readReceipt,
       required final List<String> users})
       : _deleted = deleted,
         _readReceipt = readReceipt,
@@ -130,16 +135,19 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
   factory _$_ChatModel.fromJson(Map<String, dynamic> json) =>
       _$$_ChatModelFromJson(json);
 
-  final List<String> _deleted;
+  final List<String>? _deleted;
   @override
-  List<String> get deleted {
+  List<String>? get deleted {
+    final value = _deleted;
+    if (value == null) return null;
     if (_deleted is EqualUnmodifiableListView) return _deleted;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_deleted);
+    return EqualUnmodifiableListView(value);
   }
 
   final List<String> _readReceipt;
   @override
+  @JsonKey(defaultValue: [])
   List<String> get readReceipt {
     if (_readReceipt is EqualUnmodifiableListView) return _readReceipt;
     // ignore: implicit_dynamic_type
@@ -204,16 +212,17 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
 
 abstract class _ChatModel implements ChatModel {
   const factory _ChatModel(
-      {required final List<String> deleted,
-      required final List<String> readReceipt,
+      {final List<String>? deleted,
+      @JsonKey(defaultValue: []) required final List<String> readReceipt,
       required final List<String> users}) = _$_ChatModel;
 
   factory _ChatModel.fromJson(Map<String, dynamic> json) =
       _$_ChatModel.fromJson;
 
   @override
-  List<String> get deleted;
+  List<String>? get deleted;
   @override
+  @JsonKey(defaultValue: [])
   List<String> get readReceipt;
   @override
   List<String> get users;

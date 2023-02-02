@@ -5,7 +5,7 @@ abstract class ChatsState {}
 class LoadingState implements ChatsState {}
 
 class ContentState implements ChatsState {
-  final List chats;
+  final List<ChatListItemModel> chats;
 
   ContentState({required this.chats});
 }

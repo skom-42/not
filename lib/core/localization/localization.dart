@@ -20,12 +20,15 @@ class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static Locale resolveLocale(Locale deviceLocale,
-      Iterable<Locale> supportedLocales,) {
+  static Locale resolveLocale(
+    Locale deviceLocale,
+    Iterable<Locale> supportedLocales,
+  ) {
     return supportedEnglishLocale;
   }
 
-  static final Map<String, Map<String, String>> _localizedValues = <String, Map<String, String>>{
+  static final Map<String, Map<String, String>> _localizedValues =
+      <String, Map<String, String>>{
     englishCode: <String, String>{
       // Common
       'Done': 'Fatto ✅',
@@ -34,7 +37,7 @@ class AppLocalizations {
       "You are now verified!": "Sei stato verificato!",
       "You are already verified!": "Sei già stato verificato!",
       "Your account has been deleted succesfully!":
-      "Il tuo account è stato eliminato con successo!",
+          "Il tuo account è stato eliminato con successo!",
       "Profile": "Profilo",
       "Security & Privacy": "Sicurezza & Privacy",
       "App": "App",
@@ -49,41 +52,46 @@ class AppLocalizations {
       "Support our project": "Supporta il progetto",
       "Logout": "Logout",
       "Delete account": "Elimina account",
-      "Do you really want to delete your account?": "Vuoi veramente eliminare il tuo account?",
+      "Do you really want to delete your account?":
+          "Vuoi veramente eliminare il tuo account?",
       "Yes": "Si",
       "Thanks we received your message 👍🏻": "Grazie abbiamo ricevuto il tuo messaggio",
       "Scanning not supported": "Scan non supportato",
       "Your device does not support scanning a code from an item. Please use a device with a camera.":
-      "Il tuo dispositivo non supporta la scansione di codici. Usa un dispositivo con camera.",
+          "Il tuo dispositivo non supporta la scansione di codici. Usa un dispositivo con camera.",
       "Email is a mandatory field.": "Email è un campo obbligatorio.",
       "The email address is malformed": "L'indirizzo email non è nel formato corretto",
       "Invalid recipient email sent.": "Destinatario non valido.",
       "Invalid sender email sent.": "Mittente non valido.",
       "Sent 📧": "Inviata 📧",
       "An email has been sent to you with the instructions for reset your password.":
-      "Un email ti è stata inviata con le istruzioni per reimpostare la password.",
+          "Un email ti è stata inviata con le istruzioni per reimpostare la password.",
       "Something went wrong while creating the account.":
-      "Qualcosa è andato storto mentre provavi a creare un nuovo account.",
-      "Email and Password are mandatory fields.": "I campi Email e Password sono obbligatori",
+          "Qualcosa è andato storto mentre provavi a creare un nuovo account.",
+      "Email and Password are mandatory fields.":
+          "I campi Email e Password sono obbligatori",
       "Don\'t have an account? Go to Register": "Non hai un account? ",
       "Register": "Registrati",
-      "This user account has been disabled by the admin.": "Questo account è stato disabilitato.",
+      "This user account has been disabled by the admin.":
+          "Questo account è stato disabilitato.",
       "The password is invalid.": "Password non valida.",
       "Looks like that this car is not electric or plugin hybrid.":
-      "Sembra che quest'auto non sia elettrica o plugin hybrid.",
+          "Sembra che quest'auto non sia elettrica o plugin hybrid.",
       "Add your car": "Aggiungi macchina",
       "Hey download Noty from the App Store at: https://apps.apple.com/app/noty/id6443537056":
-      "Hey scarica Noty da App Store: https://apps.apple.com/app/noty/id6443537056",
+          "Hey scarica Noty da App Store: https://apps.apple.com/app/noty/id6443537056",
       "Delete": "Elimina",
       "Block user": "Blocca utente",
       "Report chat": "Riporta chat",
       "Thanks for reporting 👍🏻": "Grazie per la segnalazione 👍🏻",
       "Looks like you are not an electric car driver. Sorry but you can't join our club. Is it an error? Contact us at: support@notyapp.it":
-      "Sembra che tu non abbia un auto elettrica. Scusa ma non puoi far parte del club. È un errore? Contattaci a: support@notyapp.it",
-      "You need to set a license plate first.": "Devi aggiungere una targa per il tuo veicolo.",
-      "You can\'t set an empty license plate.": "Non puoi aggiornare il profilo senza una targa.",
+          "Sembra che tu non abbia un auto elettrica. Scusa ma non puoi far parte del club. È un errore? Contattaci a: support@notyapp.it",
+      "You need to set a license plate first.":
+          "Devi aggiungere una targa per il tuo veicolo.",
+      "You can't set an empty license plate.":
+          "Non puoi aggiornare il profilo senza una targa.",
       "This driver is not part of our community.":
-      "Questo driver non fa parte della nostra community.",
+          "Questo driver non fa parte della nostra community.",
       'E-mail': 'E-mail',
       "Log in": "Log in",
       "Password": "Password",
@@ -98,14 +106,15 @@ class AppLocalizations {
       "Scan QR": "Scansiona QR",
       "Send message": "Invia messaggio",
       "Messaggi": "Messaggi",
+      "Messaggio": "Messaggio",
       "Verify next time": "Verifica la prossima volta",
       "Take a photo": "Foto",
       "Surname": "Cognome",
       "We do not save any data. All photos, chats or ID`s are used only for verification.":
-      "Non salviamo alcun dato. Tutte le foto, chat o ID vengono utilizzate solo per verifica.",
+          "Non salviamo alcun dato. Tutte le foto, chat o ID vengono utilizzate solo per verifica.",
       "Sign in with Google": "Sign in con Google",
       "This is your QR code which will show to other drivers if they want to contact you.":
-      "Questo è il tuo personale QR che verrà mostrato agli altri Notyfer che desiderano contattarti",
+          "Questo è il tuo personale QR che verrà mostrato agli altri Notyfer che desiderano contattarti",
       "Plate": "Targa",
       "Continue": "Continua",
       "Take a picture of your technical paper": "Scatta una foto del tuo libretto",
@@ -114,11 +123,13 @@ class AppLocalizations {
       "Item": "Item",
       "Reset password": "Reset password",
       "Chats": "Chats",
-      "New way of communication between drivers": "New way of communication between drivers",
+      "New way of communication between drivers":
+          "New way of communication between drivers",
       "Label": "Label",
       'Settings': 'Impostazioni',
       'registraty': 'Registrati',
-      'All fields are mandatory fields.':'Tutti i campi sono campi obbligatori.',
+      'All fields are mandatory fields.': 'Tutti i campi sono campi obbligatori.',
+      'enter_plate': 'Enter driver`s car plate number',
     }
   };
 
@@ -138,10 +149,8 @@ class AppLocalizations {
 
   static String ofGlobalContext(String key) {
     appRouter ??= appLocator.get<AppRouterDelegate>();
-    final BuildContext context = appLocator
-        .get<AppRouterDelegate>()
-        .navigatorKey
-        .currentContext!;
+    final BuildContext context =
+        appLocator.get<AppRouterDelegate>().navigatorKey.currentContext!;
     return AppLocalizations.of(context).value(key);
   }
 }

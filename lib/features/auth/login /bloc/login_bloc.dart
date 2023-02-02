@@ -34,6 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _onInitData(InitData event, Emitter<LoginState> emit) async {
     try {
+      // await _authRepository.logOut();
       final bool isLoggedIn = _authRepository.isUserLoggedIn();
       if (isLoggedIn) {
         _appRouter.replace(

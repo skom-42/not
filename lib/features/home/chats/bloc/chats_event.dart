@@ -6,8 +6,14 @@ class AddChat implements ChatsEvent {}
 
 class LoadChatsEvent implements ChatsEvent {}
 
-class OpenChat implements ChatsEvent {
-  final String plate;
+class UpdateChat implements ChatsEvent {
+  final List<ChatListItemModel> chats;
 
-  OpenChat({required this.plate});
+  UpdateChat({required this.chats});
+}
+
+class OpenChat implements ChatsEvent {
+  final ChatListItemModel chatModel;
+
+  OpenChat({required this.chatModel});
 }

@@ -1,47 +1,20 @@
-class CustomUser {
-  final String email;
-  final bool isVerified;
-  final String? name;
-  final String? surname;
-  final String notificationToken;
-  final String? plate;
-  final int registrationDate;
-  final String documentId;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  CustomUser({
-    required this.email,
-    required this.isVerified,
-    required this.name,
-    required this.surname,
-    required this.notificationToken,
-    required this.plate,
-    required this.registrationDate,
-    required this.documentId,
-  });
+part 'custom_user.freezed.dart';
+part 'custom_user.g.dart';
 
-  CustomUser copyWithNewPlate({required String? plate}) {
-    return CustomUser(
-      email: email,
-      isVerified: isVerified,
-      name: name,
-      surname: surname,
-      notificationToken: notificationToken,
-      plate: plate,
-      registrationDate: registrationDate,
-      documentId: documentId,
-    );
-  }
+@freezed
+class CustomUser with _$CustomUser {
+  const factory CustomUser({
+    @JsonKey(defaultValue: '') required String email,
+    @JsonKey(defaultValue: false) required bool isVerified,
+    @JsonKey(defaultValue: null) required String? name,
+    @JsonKey(defaultValue: null) required String? surname,
+    @JsonKey(defaultValue: '') required String notificationToken,
+    @JsonKey(defaultValue: null) required String? plate,
+    @JsonKey(defaultValue: 0) required int registrationDate,
+    @JsonKey(defaultValue: '') required String documentId,
+  }) = _CustomUser;
 
-  CustomUser updateIsVerified() {
-    return CustomUser(
-      email: email,
-      isVerified: true,
-      name: name,
-      surname: surname,
-      notificationToken: notificationToken,
-      plate: plate,
-      registrationDate: registrationDate,
-      documentId: documentId,
-    );
-  }
+  factory CustomUser.fromJson(Map<String, Object?> json) => _$CustomUserFromJson(json);
 }

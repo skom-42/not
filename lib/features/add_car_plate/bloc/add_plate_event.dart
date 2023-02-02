@@ -9,7 +9,3 @@ class ConfirmPlate implements AddPlateEvent {
 
   ConfirmPlate({required this.plate});
 }
-
-class RouteBack implements AddPlateEvent {}
-
-class UploadPhoto implements AddPlateEvent {}

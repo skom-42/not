@@ -8,10 +8,11 @@ part of 'chat_model.dart';
 
 _$_ChatModel _$$_ChatModelFromJson(Map<String, dynamic> json) => _$_ChatModel(
       deleted:
-          (json['deleted'] as List<dynamic>).map((e) => e as String).toList(),
-      readReceipt: (json['readReceipt'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+          (json['deleted'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      readReceipt: (json['readReceipt'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
       users: (json['users'] as List<dynamic>).map((e) => e as String).toList(),
     );
 

@@ -2,13 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noty_mobile/core/localization/localization.dart';
-import 'package:noty_mobile/core_ui/src/theme/app_text_theme.dart';
 import 'package:noty_mobile/core_ui/src/theme/app_icon_theme.dart';
+import 'package:noty_mobile/core_ui/src/theme/app_text_theme.dart';
 import 'package:noty_mobile/core_ui/src/theme/app_theme.dart';
 import 'package:noty_mobile/core_ui/src/widgets/app_button.dart';
 import 'package:noty_mobile/core_ui/src/widgets/app_text_field.dart';
-import '../../../../core_ui/src/widgets/unfocuser.dart';
-import '../bloc/login_bloc.dart';
+import 'package:noty_mobile/core_ui/src/widgets/unfocuser.dart';
+import 'package:noty_mobile/features/auth/login%20/bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,9 +18,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: '12a@qq.rr');
 
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController(text: 'qweqwe');
 
   @override
   Widget build(BuildContext context) {

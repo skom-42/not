@@ -31,7 +31,7 @@ class _DisapearingDialogScreenState extends State<DisapearingDialogScreen> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.title),
-      content: widget.message.isNotEmpty ? Text(widget.message) : const SizedBox.shrink(),
+      content: Text(widget.message),
     );
   }
 }

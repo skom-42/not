@@ -1,11 +1,29 @@
 part of 'dialog_bloc.dart';
 
-abstract class DialogState {}
-
-class LoadingState implements DialogState {}
-
-class ContentState implements DialogState {
+class DialogState {
   final String plate;
+  final List<ChatMessage> messages;
+  final bool isLoading;
+  final bool isScrollNeeded;
 
-  ContentState({required this.plate});
+  DialogState({
+    required this.plate,
+    required this.messages,
+    this.isLoading = false,
+    this.isScrollNeeded = false,
+  });
+
+  DialogState copyWith({
+    String? plate,
+    List<ChatMessage>? messages,
+    bool? isLoading,
+    bool? isScrollNeeded,
+  }) {
+    return DialogState(
+      messages: messages ?? this.messages,
+      plate: plate ?? this.plate,
+      isLoading: isLoading ?? this.isLoading,
+      isScrollNeeded: isScrollNeeded ?? this.isScrollNeeded,
+    );
+  }
 }

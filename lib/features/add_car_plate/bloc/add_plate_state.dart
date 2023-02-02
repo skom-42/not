@@ -6,14 +6,6 @@ class ConditionState implements AddPlateState {}
 
 class AddCarPlateFirstStep implements AddPlateState {}
 
-class AddCarThirdStep implements AddPlateState {
-  final String? plate;
+class AddCarSecondStep implements AddPlateState {}
 
-  AddCarThirdStep({required this.plate});
-}
-
-class InformationState implements AddPlateState {
-  final String? plate;
-
-  InformationState({required this.plate});
-}
+class AddCarThirdStep implements AddPlateState {}
