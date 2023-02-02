@@ -23,6 +23,7 @@ class ChatsBloc extends Bloc<ChatsEvent, ChatsState> {
     on<LoadChatsEvent>(_onLoadChatsEvent);
     on<OpenChat>(_onOpenChat);
     on<UpdateChat>(_onUpdateChat);
+    on<DeleteChat>(_onDeleteChat);
 
     add(LoadChatsEvent());
   }
@@ -49,6 +50,10 @@ class ChatsBloc extends Bloc<ChatsEvent, ChatsState> {
 
   Future<void> _onUpdateChat(UpdateChat event, Emitter<ChatsState> emit) async {
     emit(ContentState(chats: event.chats));
+  }
+
+  Future<void> _onDeleteChat(DeleteChat event, Emitter<ChatsState> emit) async {
+    await _chatRepository.deleteChat(event.chat);
   }
 
   Future<void> _onAddChatEvent(AddChat event, Emitter<ChatsState> emit) async {

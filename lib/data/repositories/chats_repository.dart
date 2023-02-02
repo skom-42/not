@@ -48,6 +48,12 @@ class ChatRepository {
     );
   }
 
+  Future<bool> deleteChat(ChatListItemModel chat) async {
+    return apiProvider.deleteChat(
+      chat,
+    );
+  }
+
   Future<void> blockUser({
     required ChatListItemModel chat,
   }) {

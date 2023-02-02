@@ -6,6 +6,12 @@ class AddChat implements ChatsEvent {}
 
 class LoadChatsEvent implements ChatsEvent {}
 
+class DeleteChat implements ChatsEvent {
+  final ChatListItemModel chat;
+
+  DeleteChat(this.chat);
+}
+
 class UpdateChat implements ChatsEvent {
   final List<ChatListItemModel> chats;
 

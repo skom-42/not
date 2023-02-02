@@ -71,6 +71,13 @@ class ChatsScreen extends StatelessWidget {
                                     ),
                                   );
                             },
+                            onDelete: () {
+                              context.read<ChatsBloc>().add(
+                                    DeleteChat(
+                                      state.chats[index],
+                                    ),
+                                  );
+                            },
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {

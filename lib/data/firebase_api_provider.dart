@@ -409,11 +409,19 @@ class FirebaseApiProvider {
   Future<void> blockUser({
     required ChatListItemModel chat,
   }) async {
+    print('%chat.docId% ${chat.docId}');
     _firestoreInstance.collection("Chats").doc(chat.docId).update({
       "blocked": FieldValue.arrayUnion([_getUsername()]),
       "deleted": FieldValue.arrayUnion(
           [_getUsername(), chat.toUser?.email.split('@')[0] ?? "Unknown"])
     });
+  }
+
+  Future<bool> deleteChat(ChatListItemModel chat) async {
+    _firestoreInstance.collection("Chats").doc(chat.docId).update({
+      "deleted": FieldValue.arrayUnion([_getUsername()])
+    });
+    return true;
   }
 
   Future<void> sendMessage({
