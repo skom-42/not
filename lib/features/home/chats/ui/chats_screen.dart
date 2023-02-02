@@ -10,6 +10,7 @@ import 'package:noty_mobile/core_ui/src/widgets/app_background_image.dart';
 import 'package:noty_mobile/core_ui/src/widgets/app_diviider.dart';
 import 'package:noty_mobile/core_ui/src/widgets/chats_list_item.dart';
 import 'package:noty_mobile/core_ui/src/widgets/page_app_bar.dart';
+import 'package:noty_mobile/data/repositories/auth_repository.dart';
 import 'package:noty_mobile/data/repositories/chats_repository.dart';
 import 'package:noty_mobile/features/home/chats/bloc/chats_bloc.dart';
 
@@ -23,6 +24,7 @@ class ChatsScreen extends StatelessWidget {
         return ChatsBloc(
           appRouter: appLocator<AppRouterDelegate>(),
           chatRepository: appLocator<ChatRepository>(),
+          authRepository: appLocator<AuthRepository>(),
         );
       },
       child: BlocBuilder<ChatsBloc, ChatsState>(
@@ -54,8 +56,7 @@ class ChatsScreen extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context).value('Messaggi'),
-                        style: AppTextTheme.poppins30SemiBold
-                            .copyWith(color: AppTheme.lightColor),
+                        style: AppTextTheme.poppins30SemiBold.copyWith(color: AppTheme.lightColor),
                       ),
                     ),
                     const SizedBox(height: 12),
