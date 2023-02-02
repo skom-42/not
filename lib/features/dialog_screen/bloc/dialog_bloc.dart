@@ -76,7 +76,6 @@ class DialogBloc extends Bloc<DialogEvent, DialogState> {
       chat: _chatModel,
     );
     _appRouter.pop();
-    _appRouter.pop();
   }
 
   Future<void> _reportChat(ReportChat event, Emitter<DialogState> emit) async {}

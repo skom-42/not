@@ -86,7 +86,7 @@ class _DialogScreenState extends State<DialogScreen> {
                           PopupMenuItem(
                             height: 30,
                             onTap: () {
-                              // context.read<DialogBloc>().add(BlockUser());
+                              context.read<DialogBloc>().add(BlockUser());
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
