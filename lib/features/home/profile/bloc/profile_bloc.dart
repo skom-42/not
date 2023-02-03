@@ -61,7 +61,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               pw.Image(image),
               pw.Align(
                   alignment: pw.Alignment.center,
-                  child: pw.SizedBox(height: 80, width: 80, child: pw.Image(image2)))
+                  child: pw.Padding(
+                    padding: const pw.EdgeInsets.only(bottom: 30),
+                    child: pw.SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: pw.Image(image2),
+                    ),
+                  ))
             ],
           );
         },

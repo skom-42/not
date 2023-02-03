@@ -85,10 +85,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Positioned(
                                 bottom: 40,
                                 left: width,
-                                child: EasyQRImage(
-                                  data: state.plate!,
-                                  size: 120,
-                                  backgroundColor: AppTheme.lightColor,
+                                child: Container(
+                                  width: 120,
+                                  height: 120,
+                                  child: EasyQRImage(
+                                    data: state.plate!,
+                                    size: 200,
+                                    backgroundColor: AppTheme.lightColor,
+                                  ),
                                 ),
                               ),
                             ],
@@ -157,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final Uint8List image = await screenshotController.captureFromWidget(
       EasyQRImage(
         data: plate,
-        size: 120,
+        size: 200,
         backgroundColor: AppTheme.lightColor,
       ),
     );
