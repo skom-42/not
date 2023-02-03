@@ -27,6 +27,7 @@ class FirebaseApiProvider {
   StreamController<List<ChatListItemModel>>? chatStream;
   StreamController<List<ChatMessage>>? chatMessagesStream;
 
+  //TODO: Improve error handling
   Future<void> createUser({
     required String email,
     required String password,
@@ -44,8 +45,20 @@ class FirebaseApiProvider {
         name: name,
         surname: surName,
       );
-    } catch (e) {
-      throw Exception(e.toString());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        throw CustomException(
+          errorMessage: 'Questo indirizzo email è già utilizzato da un altro account',
+        );
+      } else {
+        throw CustomException(
+          errorMessage: 'Qualcosa è andato storto.',
+        );
+      }
+    } on Exception catch (e) {
+      throw CustomException(
+        errorMessage: e.toString(),
+      );
     }
   }
 
@@ -129,7 +142,17 @@ class FirebaseApiProvider {
   }
 
   Future<void> logOut() async {
-    await _firebaseAuthInstance.signOut();
+    try {
+      await _firebaseAuthInstance.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(
+        errorMessage: e.message.toString(),
+      );
+    } on Exception catch (e) {
+      throw CustomException(
+        errorMessage: e.toString(),
+      );
+    }
   }
 
   Future<void> updateToken() async {
@@ -199,12 +222,23 @@ class FirebaseApiProvider {
   }
 
   Future<CustomUser?> getUserByPlate({required String plate}) async {
-    final db = await _firestoreInstance.collection("Users").where('plate', isEqualTo: plate).get();
+    try {
+      final db =
+          await _firestoreInstance.collection("Users").where('plate', isEqualTo: plate).get();
 
-    if (db.docs.isNotEmpty) {
-      return CustomUser.fromJson(db.docs.first.data());
+      if (db.docs.isNotEmpty) {
+        return CustomUser.fromJson(db.docs.first.data());
+      }
+      return null;
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(errorMessage: e.message ?? '');
+    } on Exception catch (e) {
+      throw CustomException(
+        errorMessage: AppLocalizations.ofGlobalContext(
+          'Something went wrong while creating the account.',
+        ),
+      );
     }
-    return null;
   }
 
   Future<CustomUser?> getUserByName({required String name}) async {
@@ -554,32 +588,31 @@ class FirebaseApiProvider {
     return updatedPlates;
   }
 
-  Future<bool> checkForValidXml({required String plate}) async {
-    final String? plate = customUser?.plate;
-    if (plate != null) {
-      try {
-        final http.Response response = await http.post(
-          Uri.parse('http://www.targa.co.it/api/reg.asmx/CheckItaly'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'RegistrationNumber': plate,
-            'username': 'noty',
-          }),
-        );
-        print('VEREFY RESPONCE');
-        final String xmlResponse = response.body.toString();
-        print(xmlResponse);
-
-        print('VEREFY RESPONCE');
-        if (xmlResponse.contains('"CurrentTextValue": "Elettrica"')) {
-          return true;
-        }
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    }
-    return false;
-  }
+// Future<bool> checkForValidXml({required String plate}) async {
+//   final String? plate = customUser?.plate;
+//   if (plate != null) {
+//     try {
+//       final http.Response response = await http.post(
+//         Uri.parse('http://www.targa.co.it/api/reg.asmx/CheckItaly'),
+//         headers: <String, String>{
+//           'Content-Type': 'application/json; charset=UTF-8',
+//         },
+//         body: jsonEncode(<String, String>{
+//           'RegistrationNumber': plate,
+//           'username': 'noty',
+//         }),
+//       );
+//       print('VEREFY RESPONCE');
+//       final String xmlResponse = response.body.toString();
+//       print(xmlResponse);
+//
+//       if (xmlResponse.contains('"CurrentTextValue": "Elettrica"')) {
+//         return true;
+//       }
+//     } catch (e) {
+//       throw Exception(e.toString());
+//     }
+//   }
+//   return false;
+// }
 }

@@ -3,6 +3,7 @@ import 'package:navigation/navigation.dart';
 import 'package:noty_mobile/core/localization/localization.dart';
 import 'package:noty_mobile/core/utils/field_validator.dart';
 import 'package:noty_mobile/core_ui/src/dialogs/android_dialog/dialog_page.dart';
+import 'package:noty_mobile/data/custom_exception.dart';
 import 'package:noty_mobile/data/repositories/auth_repository.dart';
 import 'package:noty_mobile/features/home/home_page.dart';
 
@@ -50,6 +51,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           ),
         );
       }
+    } on CustomException catch (e) {
+      _appRouter.push(
+        DefaultDialog(
+          title: 'Oh oh',
+          message: e.errorMessage,
+        ),
+      );
     } on Exception catch (e) {
       _appRouter.push(
         DefaultDialog(
