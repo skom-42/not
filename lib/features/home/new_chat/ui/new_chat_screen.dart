@@ -54,7 +54,7 @@ class NewChatsScreen extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: Text(
-                      AppLocalizations.of(context).value('enter_plate'),
+                      AppLocalizations.of(context).value('Enter driver`s car plate number'),
                       style: AppTextTheme.poppins17SemiBold
                           .copyWith(color: AppTheme.whiteColor),
                     ),
