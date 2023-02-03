@@ -95,7 +95,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               );
                         },
                         child: Text(
-                          'Registrand acconsenti alla nostra EULA',
+                          'Registrandoti acconsenti alla nostra EULA',
                           style: AppTextTheme.poppins12Regular.copyWith(color: AppTheme.lightColor),
                         ),
                       ),

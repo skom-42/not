@@ -36,7 +36,7 @@ class SettingsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Settings',
+                    AppLocalizations.of(context).value('Settings'),
                     style: AppTextTheme.poppins24Medium.copyWith(
                       color: AppTheme.lightColor,
                     ),
@@ -46,62 +46,71 @@ class SettingsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const SettingsTitle(title: 'Profile'),
+                          SettingsTitle(
+                            title: AppLocalizations.of(context).value('Profile'),
+                          ),
                           SettingSubTile(
                             isNeedChevron: true,
-                            title: 'Update Profile',
+                            title: AppLocalizations.of(context).value('Update Profile'),
                             leadingIcon: CupertinoIcons.profile_circled,
                             onPressed: () {
                               context.read<SettingsBloc>().add(UpdateProfile());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Verify account',
+                            title: AppLocalizations.of(context).value('Verify account'),
                             leadingIcon: CupertinoIcons.person_crop_circle_fill_badge_checkmark,
                             onPressed: () {
                               context.read<SettingsBloc>().add(VerifyAccount());
                             },
                           ),
-                          const SettingsTitle(title: 'Security & Privacy'),
+                          SettingsTitle(
+                            title: AppLocalizations.of(context).value(
+                              'Security & Privacy',
+                            ),
+                          ),
                           SettingSubTile(
                             isNeedChevron: true,
-                            title: 'Change password',
+                            title: AppLocalizations.of(context).value('Change password'),
                             leadingIcon: Icons.key_outlined,
                             onPressed: () {
                               context.read<SettingsBloc>().add(ChangePassword());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Privacy policy',
+                            title: AppLocalizations.of(context).value('Privacy Policy'),
                             leadingIcon: CupertinoIcons.eye,
                             onPressed: () {
                               context.read<SettingsBloc>().add(PrivacyPolicy());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Terms & Conditions',
+                            title: AppLocalizations.of(context).value('Terms & Conditions'),
                             leadingIcon: CupertinoIcons.news,
                             onPressed: () {
                               context.read<SettingsBloc>().add(TermsAndConditions());
                             },
                           ),
-                          const SettingsTitle(title: 'App'),
+                          SettingsTitle(
+                            title: AppLocalizations.of(context)
+                                .value(AppLocalizations.of(context).value('App')),
+                          ),
                           SettingSubTile(
-                            title: 'Invite NOTYFER',
+                            title: AppLocalizations.of(context).value('Invite NOTYFER'),
                             leadingIcon: CupertinoIcons.paperplane,
                             onPressed: () {
                               context.read<SettingsBloc>().add(InviteNotyfer());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Leave a review',
+                            title: AppLocalizations.of(context).value('Leave a review'),
                             leadingIcon: CupertinoIcons.star,
                             onPressed: () {
                               context.read<SettingsBloc>().add(LiveReview());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Contact support',
+                            title: AppLocalizations.of(context).value('Contact support'),
                             leadingIcon: CupertinoIcons.mail,
                             onPressed: () {
                               context.read<SettingsBloc>().add(ContactSupport());
@@ -109,20 +118,20 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           SettingSubTile(
                             isNeedChevron: true,
-                            title: 'Support NOTY',
+                            title: 'Supporta NOTY',
                             onPressed: () {
                               context.read<SettingsBloc>().add(SupportNoty());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Logout',
+                            title: AppLocalizations.of(context).value('Logout'),
                             leadingIcon: Icons.logout_outlined,
                             onPressed: () {
                               context.read<SettingsBloc>().add(Logout());
                             },
                           ),
                           SettingSubTile(
-                            title: 'Delete account',
+                            title: AppLocalizations.of(context).value('Delete account'),
                             leadingIcon: CupertinoIcons.trash,
                             onPressed: () {
                               context.read<SettingsBloc>().add(DeleteAccount());
@@ -131,7 +140,7 @@ class SettingsScreen extends StatelessWidget {
                           const SettingsTitle(title: 'Social'),
                           SettingSubTile(
                             isNeedChevron: true,
-                            title: 'Subscribe to mailing list',
+                            title: 'Iscriviti alla mailing list',
                             leadingIcon: CupertinoIcons.envelope_badge,
                             onPressed: () {
                               context.read<SettingsBloc>().add(SubscribeToMailList());
