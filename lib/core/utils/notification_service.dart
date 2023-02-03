@@ -10,6 +10,7 @@ import 'package:noty_mobile/domain/models/chat_list_item_model.dart';
 import 'package:noty_mobile/domain/models/notification_message_data.dart';
 import 'package:noty_mobile/features/dialog_screen/ui/dialog_page.dart';
 
+@pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   NotificationService()
@@ -18,8 +19,13 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 @pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  // handle action
+Future<void> notificationTapBackground(NotificationResponse notificationResponse) async {
+  await Firebase.initializeApp();
+  NotificationService()
+    ..initNotifications()
+    ..showNotification(RemoteMessage(
+      data: jsonDecode(notificationResponse.payload ?? ''),
+    ));
 }
 
 class NotificationService {
@@ -34,16 +40,11 @@ class NotificationService {
   }
 
   Future<void> _requestPermissions() async {
-    await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      provisional: false,
-      sound: true,
-    );
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+    try {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestPermission();
+    } catch (e) {}
 
     await flutterLocalNotificationsPlugin.initialize(
       // @mipmap/ic_launcher
@@ -51,7 +52,6 @@ class NotificationService {
           android: AndroidInitializationSettings('@mipmap/ic_launcher')),
       onDidReceiveNotificationResponse:
           (NotificationResponse notificationResponse) async {
-        print('%print% ${notificationResponse.payload.toString()}');
         _onMessageOpenApp(
           RemoteMessage(
             data: jsonDecode(notificationResponse.payload ?? ''),
@@ -80,12 +80,16 @@ class NotificationService {
   }
 
   static Future<void> _onMessageOpenApp(RemoteMessage? message) async {
+    flutterLocalNotificationsPlugin.cancelAll();
     if (message != null) {
       final NotificationMessageData notification =
           NotificationMessageData.fromJson(message.data);
       final ChatListItemModel? chat =
           await appLocator<ChatRepository>().getChat(plate: notification.plate);
       if (chat != null) {
+        if (chat.blocked.contains(chat.user?.email)) {
+          return;
+        }
         appLocator<AppRouterDelegate>().push(DialogPage(chatModel: chat));
       }
     }
@@ -110,20 +114,22 @@ class NotificationService {
     print('%print% ${notification.toMap()}');
     print('%message% ${message.toMap()}');
 
+    final String plate = message.data['plate'] ?? '';
     if (notification != null) {
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecond,
         notification.title,
-        notification.body,
+        '${plate.isEmpty ? '$plate: ' : ''}${notification.body}',
         const NotificationDetails(
           android: AndroidNotificationDetails(
             'noty_mobile',
-            'noty_mobile_channel',
-            channelDescription: 'channel noty_mobile',
+            'Noty',
+            channelDescription: 'Noty notification',
             importance: Importance.max,
             priority: Priority.high,
             icon: '@mipmap/ic_launcher',
             groupKey: 'noty',
+            category: AndroidNotificationCategory.social,
             visibility: NotificationVisibility.public,
             playSound: true,
             sound: RawResourceAndroidNotificationSound("owl"),

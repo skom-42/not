@@ -23,6 +23,8 @@ mixin _$ChatModel {
   List<String>? get deleted => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: [])
   List<String> get readReceipt => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
+  List<String> get blocked => throw _privateConstructorUsedError;
   List<String> get users => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,6 +41,7 @@ abstract class $ChatModelCopyWith<$Res> {
   $Res call(
       {List<String>? deleted,
       @JsonKey(defaultValue: []) List<String> readReceipt,
+      @JsonKey(defaultValue: []) List<String> blocked,
       List<String> users});
 }
 
@@ -57,6 +60,7 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
   $Res call({
     Object? deleted = freezed,
     Object? readReceipt = null,
+    Object? blocked = null,
     Object? users = null,
   }) {
     return _then(_value.copyWith(
@@ -67,6 +71,10 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
       readReceipt: null == readReceipt
           ? _value.readReceipt
           : readReceipt // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      blocked: null == blocked
+          ? _value.blocked
+          : blocked // ignore: cast_nullable_to_non_nullable
               as List<String>,
       users: null == users
           ? _value.users
@@ -86,6 +94,7 @@ abstract class _$$_ChatModelCopyWith<$Res> implements $ChatModelCopyWith<$Res> {
   $Res call(
       {List<String>? deleted,
       @JsonKey(defaultValue: []) List<String> readReceipt,
+      @JsonKey(defaultValue: []) List<String> blocked,
       List<String> users});
 }
 
@@ -102,6 +111,7 @@ class __$$_ChatModelCopyWithImpl<$Res>
   $Res call({
     Object? deleted = freezed,
     Object? readReceipt = null,
+    Object? blocked = null,
     Object? users = null,
   }) {
     return _then(_$_ChatModel(
@@ -112,6 +122,10 @@ class __$$_ChatModelCopyWithImpl<$Res>
       readReceipt: null == readReceipt
           ? _value._readReceipt
           : readReceipt // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      blocked: null == blocked
+          ? _value._blocked
+          : blocked // ignore: cast_nullable_to_non_nullable
               as List<String>,
       users: null == users
           ? _value._users
@@ -127,9 +141,11 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
   const _$_ChatModel(
       {final List<String>? deleted,
       @JsonKey(defaultValue: []) required final List<String> readReceipt,
+      @JsonKey(defaultValue: []) required final List<String> blocked,
       required final List<String> users})
       : _deleted = deleted,
         _readReceipt = readReceipt,
+        _blocked = blocked,
         _users = users;
 
   factory _$_ChatModel.fromJson(Map<String, dynamic> json) =>
@@ -154,6 +170,15 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
     return EqualUnmodifiableListView(_readReceipt);
   }
 
+  final List<String> _blocked;
+  @override
+  @JsonKey(defaultValue: [])
+  List<String> get blocked {
+    if (_blocked is EqualUnmodifiableListView) return _blocked;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_blocked);
+  }
+
   final List<String> _users;
   @override
   List<String> get users {
@@ -164,7 +189,7 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatModel(deleted: $deleted, readReceipt: $readReceipt, users: $users)';
+    return 'ChatModel(deleted: $deleted, readReceipt: $readReceipt, blocked: $blocked, users: $users)';
   }
 
   @override
@@ -174,6 +199,7 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
       ..add(DiagnosticsProperty('type', 'ChatModel'))
       ..add(DiagnosticsProperty('deleted', deleted))
       ..add(DiagnosticsProperty('readReceipt', readReceipt))
+      ..add(DiagnosticsProperty('blocked', blocked))
       ..add(DiagnosticsProperty('users', users));
   }
 
@@ -185,6 +211,7 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
             const DeepCollectionEquality().equals(other._deleted, _deleted) &&
             const DeepCollectionEquality()
                 .equals(other._readReceipt, _readReceipt) &&
+            const DeepCollectionEquality().equals(other._blocked, _blocked) &&
             const DeepCollectionEquality().equals(other._users, _users));
   }
 
@@ -194,6 +221,7 @@ class _$_ChatModel with DiagnosticableTreeMixin implements _ChatModel {
       runtimeType,
       const DeepCollectionEquality().hash(_deleted),
       const DeepCollectionEquality().hash(_readReceipt),
+      const DeepCollectionEquality().hash(_blocked),
       const DeepCollectionEquality().hash(_users));
 
   @JsonKey(ignore: true)
@@ -214,6 +242,7 @@ abstract class _ChatModel implements ChatModel {
   const factory _ChatModel(
       {final List<String>? deleted,
       @JsonKey(defaultValue: []) required final List<String> readReceipt,
+      @JsonKey(defaultValue: []) required final List<String> blocked,
       required final List<String> users}) = _$_ChatModel;
 
   factory _ChatModel.fromJson(Map<String, dynamic> json) =
@@ -224,6 +253,9 @@ abstract class _ChatModel implements ChatModel {
   @override
   @JsonKey(defaultValue: [])
   List<String> get readReceipt;
+  @override
+  @JsonKey(defaultValue: [])
+  List<String> get blocked;
   @override
   List<String> get users;
   @override

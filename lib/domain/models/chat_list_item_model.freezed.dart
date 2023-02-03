@@ -24,6 +24,9 @@ mixin _$ChatListItemModel {
   String get plate => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: [])
   List<dynamic> get readReceiptUsers => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
+  List<dynamic> get blocked => throw _privateConstructorUsedError;
+  CustomUser? get user => throw _privateConstructorUsedError;
   CustomUser? get toUser => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,8 +45,11 @@ abstract class $ChatListItemModelCopyWith<$Res> {
       {String docId,
       String plate,
       @JsonKey(defaultValue: []) List<dynamic> readReceiptUsers,
+      @JsonKey(defaultValue: []) List<dynamic> blocked,
+      CustomUser? user,
       CustomUser? toUser});
 
+  $CustomUserCopyWith<$Res>? get user;
   $CustomUserCopyWith<$Res>? get toUser;
 }
 
@@ -63,6 +69,8 @@ class _$ChatListItemModelCopyWithImpl<$Res, $Val extends ChatListItemModel>
     Object? docId = null,
     Object? plate = null,
     Object? readReceiptUsers = null,
+    Object? blocked = null,
+    Object? user = freezed,
     Object? toUser = freezed,
   }) {
     return _then(_value.copyWith(
@@ -78,11 +86,31 @@ class _$ChatListItemModelCopyWithImpl<$Res, $Val extends ChatListItemModel>
           ? _value.readReceiptUsers
           : readReceiptUsers // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      blocked: null == blocked
+          ? _value.blocked
+          : blocked // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as CustomUser?,
       toUser: freezed == toUser
           ? _value.toUser
           : toUser // ignore: cast_nullable_to_non_nullable
               as CustomUser?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $CustomUserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 
   @override
@@ -110,8 +138,12 @@ abstract class _$$_ChatListItemModelCopyWith<$Res>
       {String docId,
       String plate,
       @JsonKey(defaultValue: []) List<dynamic> readReceiptUsers,
+      @JsonKey(defaultValue: []) List<dynamic> blocked,
+      CustomUser? user,
       CustomUser? toUser});
 
+  @override
+  $CustomUserCopyWith<$Res>? get user;
   @override
   $CustomUserCopyWith<$Res>? get toUser;
 }
@@ -130,6 +162,8 @@ class __$$_ChatListItemModelCopyWithImpl<$Res>
     Object? docId = null,
     Object? plate = null,
     Object? readReceiptUsers = null,
+    Object? blocked = null,
+    Object? user = freezed,
     Object? toUser = freezed,
   }) {
     return _then(_$_ChatListItemModel(
@@ -145,6 +179,14 @@ class __$$_ChatListItemModelCopyWithImpl<$Res>
           ? _value._readReceiptUsers
           : readReceiptUsers // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      blocked: null == blocked
+          ? _value._blocked
+          : blocked // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as CustomUser?,
       toUser: freezed == toUser
           ? _value.toUser
           : toUser // ignore: cast_nullable_to_non_nullable
@@ -160,8 +202,11 @@ class _$_ChatListItemModel implements _ChatListItemModel {
       {required this.docId,
       required this.plate,
       @JsonKey(defaultValue: []) required final List<dynamic> readReceiptUsers,
+      @JsonKey(defaultValue: []) required final List<dynamic> blocked,
+      this.user,
       this.toUser})
-      : _readReceiptUsers = readReceiptUsers;
+      : _readReceiptUsers = readReceiptUsers,
+        _blocked = blocked;
 
   factory _$_ChatListItemModel.fromJson(Map<String, dynamic> json) =>
       _$$_ChatListItemModelFromJson(json);
@@ -180,12 +225,23 @@ class _$_ChatListItemModel implements _ChatListItemModel {
     return EqualUnmodifiableListView(_readReceiptUsers);
   }
 
+  final List<dynamic> _blocked;
+  @override
+  @JsonKey(defaultValue: [])
+  List<dynamic> get blocked {
+    if (_blocked is EqualUnmodifiableListView) return _blocked;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_blocked);
+  }
+
+  @override
+  final CustomUser? user;
   @override
   final CustomUser? toUser;
 
   @override
   String toString() {
-    return 'ChatListItemModel(docId: $docId, plate: $plate, readReceiptUsers: $readReceiptUsers, toUser: $toUser)';
+    return 'ChatListItemModel(docId: $docId, plate: $plate, readReceiptUsers: $readReceiptUsers, blocked: $blocked, user: $user, toUser: $toUser)';
   }
 
   @override
@@ -197,13 +253,21 @@ class _$_ChatListItemModel implements _ChatListItemModel {
             (identical(other.plate, plate) || other.plate == plate) &&
             const DeepCollectionEquality()
                 .equals(other._readReceiptUsers, _readReceiptUsers) &&
+            const DeepCollectionEquality().equals(other._blocked, _blocked) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.toUser, toUser) || other.toUser == toUser));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, docId, plate,
-      const DeepCollectionEquality().hash(_readReceiptUsers), toUser);
+  int get hashCode => Object.hash(
+      runtimeType,
+      docId,
+      plate,
+      const DeepCollectionEquality().hash(_readReceiptUsers),
+      const DeepCollectionEquality().hash(_blocked),
+      user,
+      toUser);
 
   @JsonKey(ignore: true)
   @override
@@ -225,6 +289,8 @@ abstract class _ChatListItemModel implements ChatListItemModel {
       {required final String docId,
       required final String plate,
       @JsonKey(defaultValue: []) required final List<dynamic> readReceiptUsers,
+      @JsonKey(defaultValue: []) required final List<dynamic> blocked,
+      final CustomUser? user,
       final CustomUser? toUser}) = _$_ChatListItemModel;
 
   factory _ChatListItemModel.fromJson(Map<String, dynamic> json) =
@@ -237,6 +303,11 @@ abstract class _ChatListItemModel implements ChatListItemModel {
   @override
   @JsonKey(defaultValue: [])
   List<dynamic> get readReceiptUsers;
+  @override
+  @JsonKey(defaultValue: [])
+  List<dynamic> get blocked;
+  @override
+  CustomUser? get user;
   @override
   CustomUser? get toUser;
   @override

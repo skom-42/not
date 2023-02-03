@@ -56,7 +56,8 @@ class ChatsScreen extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context).value('Messaggi'),
-                        style: AppTextTheme.poppins30SemiBold.copyWith(color: AppTheme.lightColor),
+                        style: AppTextTheme.poppins30SemiBold
+                            .copyWith(color: AppTheme.lightColor),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -65,6 +66,8 @@ class ChatsScreen extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return ChatsListItem(
                             name: state.chats[index].plate,
+                            isUnread: !state.chats[index].readReceiptUsers
+                                .contains(state.chats[index].user?.email),
                             onTap: () {
                               context.read<ChatsBloc>().add(
                                     OpenChat(

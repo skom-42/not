@@ -13,6 +13,10 @@ _$_ChatModel _$$_ChatModelFromJson(Map<String, dynamic> json) => _$_ChatModel(
               ?.map((e) => e as String)
               .toList() ??
           [],
+      blocked: (json['blocked'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
       users: (json['users'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
@@ -20,5 +24,6 @@ Map<String, dynamic> _$$_ChatModelToJson(_$_ChatModel instance) =>
     <String, dynamic>{
       'deleted': instance.deleted,
       'readReceipt': instance.readReceipt,
+      'blocked': instance.blocked,
       'users': instance.users,
     };

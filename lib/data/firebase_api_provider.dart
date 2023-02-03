@@ -34,7 +34,8 @@ class FirebaseApiProvider {
     required String surName,
   }) async {
     try {
-      final UserCredential newUser = await _firebaseAuthInstance.createUserWithEmailAndPassword(
+      final UserCredential newUser =
+          await _firebaseAuthInstance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -59,7 +60,8 @@ class FirebaseApiProvider {
 
   Future<void> logIn({required String email, required String password}) async {
     try {
-      final UserCredential userCredential = await _firebaseAuthInstance.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _firebaseAuthInstance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -199,7 +201,10 @@ class FirebaseApiProvider {
   }
 
   Future<CustomUser?> getUserByPlate({required String plate}) async {
-    final db = await _firestoreInstance.collection("Users").where('plate', isEqualTo: plate).get();
+    final db = await _firestoreInstance
+        .collection("Users")
+        .where('plate', isEqualTo: plate)
+        .get();
 
     if (db.docs.isNotEmpty) {
       return CustomUser.fromJson(db.docs.first.data());
@@ -269,8 +274,10 @@ class FirebaseApiProvider {
   }
 
   Future<bool> getPlate({String? userName}) async {
-    final DocumentSnapshot result =
-        await _firestoreInstance.collection('Users').doc(userName ?? _getUsername()).get();
+    final DocumentSnapshot result = await _firestoreInstance
+        .collection('Users')
+        .doc(userName ?? _getUsername())
+        .get();
     final Map<String, dynamic> parsedData = result.data() as Map<String, dynamic>;
     final String? plate = parsedData['plate'] as String?;
     return plate != null;
@@ -293,7 +300,9 @@ class FirebaseApiProvider {
     chatStream?.close();
     chatStream = null;
     chatStream = StreamController<List<ChatListItemModel>>();
-    final db = _firestoreInstance.collection("Chats").where("users", arrayContains: _getUsername());
+    final db = _firestoreInstance
+        .collection("Chats")
+        .where("users", arrayContains: _getUsername());
     db.snapshots().listen((event) async {
       final queryCount = event.docs.length;
       if (queryCount >= 1) {
@@ -314,6 +323,8 @@ class FirebaseApiProvider {
                   plate: plate,
                   readReceiptUsers: chat.readReceipt,
                   toUser: toUser,
+                  blocked: chat.blocked,
+                  user: customUser,
                 );
                 result.add(chatItem);
               }
@@ -353,6 +364,8 @@ class FirebaseApiProvider {
     final ChatListItemModel chatItem = ChatListItemModel(
       docId: chat.id,
       plate: plate,
+      blocked: chatData['blocked'] ?? [],
+      user: customUser,
       readReceiptUsers: chatData['readReceipt'] ?? [],
       toUser: recepient,
     );
@@ -386,6 +399,8 @@ class FirebaseApiProvider {
             plate: plate,
             readReceiptUsers: chat.readReceipt,
             toUser: recepient,
+            blocked: chat.blocked,
+            user: customUser,
           );
           return chatItem;
         } catch (e) {
@@ -400,7 +415,6 @@ class FirebaseApiProvider {
   Future<void> blockUser({
     required ChatListItemModel chat,
   }) async {
-    print('%chat.docId% ${chat.docId}');
     _firestoreInstance.collection("Chats").doc(chat.docId).update({
       "blocked": FieldValue.arrayUnion([_getUsername()]),
       "deleted": FieldValue.arrayUnion([_getUsername(), chat.toUser?.email ?? "Unknown"])
@@ -426,7 +440,7 @@ class FirebaseApiProvider {
         "body": message,
         "subtitle": _getUsername(),
         "badge": 1,
-        "sound": "owl.mp3",
+        "sound": "owl",
         "plate": customUser?.plate ?? "",
       },
       "notification": {
@@ -442,6 +456,12 @@ class FirebaseApiProvider {
           'sound': 'owl',
           'visibility': 1,
         }
+      },
+      "android": {
+        'channelId': "noty_mobile",
+        'priority': 1,
+        'sound': 'owl',
+        'visibility': 1,
       }
     };
 
@@ -452,13 +472,13 @@ class FirebaseApiProvider {
       "senderID": _getUsername(),
       "senderName": customUser?.plate ?? ''
     };
-    print('%sendMessage% ${_getUsername()}');
     if (currentChat == null) {
       print('%null}');
     }
     final db = await currentChat?.collection("thread").get();
 
     await currentChat?.collection("thread").add(data);
+    updateReadReceiptStatus(isSent: true, recieverId: chat.toUser?.email);
     sendPushNotification(notifPayload);
   }
 
@@ -480,7 +500,8 @@ class FirebaseApiProvider {
     chatMessagesStream?.close();
     chatMessagesStream = null;
     chatMessagesStream = StreamController<List<ChatMessage>>();
-    final db = await _firestoreInstance.collection("Chats").doc(chatListItemModel.docId).get();
+    final db =
+        await _firestoreInstance.collection("Chats").doc(chatListItemModel.docId).get();
 
     if (db.exists) {
       currentChat = db.reference;
@@ -489,10 +510,11 @@ class FirebaseApiProvider {
           .orderBy("created", descending: true)
           .snapshots()
           .listen((event) {
+        updateReadReceiptStatus();
+
         final List<ChatMessage> result = [];
         for (var message in event.docs) {
           final Map<String, dynamic> mes = message.data();
-
           if (mes['senderID'] == _getUsername()) {
             mes['isMyMessage'] = true;
           }
@@ -503,6 +525,18 @@ class FirebaseApiProvider {
     }
 
     return chatMessagesStream!.stream;
+  }
+
+  void updateReadReceiptStatus({bool isSent = false, String? recieverId}) {
+    if (isSent) {
+      currentChat?.update({
+        "readReceipt": FieldValue.arrayRemove([recieverId ?? "Unknown"])
+      });
+    } else {
+      currentChat?.update({
+        "readReceipt": FieldValue.arrayUnion([_getUsername()])
+      });
+    }
   }
 
   Future<void> updateUser({
