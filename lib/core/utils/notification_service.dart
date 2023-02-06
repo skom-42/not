@@ -100,7 +100,6 @@ class NotificationService {
       return;
     }
 
-    // final RemoteNotification? notification = message.notification;
     final RemoteNotification notification = RemoteNotification(
         title: message.notification?.title,
         body: message.notification?.body,
@@ -111,32 +110,27 @@ class NotificationService {
           channelId: 'noty_mobile',
         ));
 
-    print('%print% ${notification.toMap()}');
-    print('%message% ${message.toMap()}');
-
     final String plate = message.data['plate'] ?? '';
-    if (notification != null) {
-      flutterLocalNotificationsPlugin.show(
-        DateTime.now().millisecond,
-        notification.title,
-        '${plate.isEmpty ? '$plate: ' : ''}${notification.body}',
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'noty_mobile',
-            'Noty',
-            channelDescription: 'Noty notification',
-            importance: Importance.max,
-            priority: Priority.high,
-            icon: '@mipmap/ic_launcher',
-            groupKey: 'noty',
-            category: AndroidNotificationCategory.social,
-            visibility: NotificationVisibility.public,
-            playSound: true,
-            sound: RawResourceAndroidNotificationSound("owl"),
-          ),
+    flutterLocalNotificationsPlugin.show(
+      DateTime.now().millisecond,
+      notification.title,
+      '${plate.isNotEmpty ? '$plate: ' : ''}${notification.body}',
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'noty_mobile',
+          'Noty',
+          channelDescription: 'Noty notification',
+          importance: Importance.max,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+          groupKey: 'noty',
+          category: AndroidNotificationCategory.social,
+          visibility: NotificationVisibility.public,
+          playSound: true,
+          sound: RawResourceAndroidNotificationSound("owl"),
         ),
-        payload: jsonEncode(message.data),
-      );
-    }
+      ),
+      payload: jsonEncode(message.data),
+    );
   }
 }
