@@ -294,8 +294,8 @@ class FirebaseApiProvider {
   }
 
   Future<void> deleteCurrentUser() async {
-    await _firestoreInstance.collection("Users").doc(_getUsername()).delete();
     try {
+      await _firestoreInstance.collection("Users").doc(_getUsername()).delete();
       await _firebaseAuthInstance.currentUser?.delete();
     } catch (e) {
       throw Exception(e.toString());
