@@ -87,14 +87,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       ),
                       const SizedBox(height: 64),
                       AppButton(
-                        text: AppLocalizations.of(context).value('Plate'),
+                        text: AppLocalizations.of(context).value('Save'),
                         backgroundColor: AppTheme.buttonColor,
                         onPressed: () {
                           if (passwordController.text.isNotEmpty) {
                             context.read<UpdateProfileBloc>().add(
                                   UpdateProfile(
                                     name: nameController.text,
-                                    surname: nameController.text,
+                                    surname: surnameController.text,
                                     plate: passwordController.text.trim().toUpperCase(),
                                   ),
                                 );

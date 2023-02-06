@@ -36,13 +36,9 @@ class VerifyAccountBloc extends Bloc<VerifyAccountEvent, VerifyAccountState> {
         final inputImage = InputImage.fromFile(image);
         final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
         final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-        print('1111111111111111111111');
-        print(recognizedText.text);
-        print('1111111111111111111111');
 
         if (recognizedText.text.contains(firstString) ||
             recognizedText.text.contains(secondString)) {
-          print('Ochko');
           await _authRepository.updateVerification();
           if (isNeedVerify != null && isNeedVerify!) {
             _appRouter.replace(DashboardPage());
@@ -62,7 +58,7 @@ class VerifyAccountBloc extends Bloc<VerifyAccountEvent, VerifyAccountState> {
   }
 
   Future<void> _onRouteBack(RouteBack event, Emitter<VerifyAccountState> emit) async {
-    if (isNeedVerify == null && !isNeedVerify!) {
+    if (isNeedVerify == null) {
       _appRouter.pop();
     }
   }
