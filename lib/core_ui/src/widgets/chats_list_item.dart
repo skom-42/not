@@ -6,6 +6,7 @@ import 'package:noty_mobile/core_ui/src/theme/app_theme.dart';
 
 class ChatsListItem extends StatelessWidget {
   final String name;
+  final bool isUnread;
   final Function onTap;
   final Function onDelete;
 
@@ -14,6 +15,7 @@ class ChatsListItem extends StatelessWidget {
     required this.onTap,
     required this.onDelete,
     Key? key,
+    required this.isUnread,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class ChatsListItem extends StatelessWidget {
       key: UniqueKey(),
       endActionPane: ActionPane(
         extentRatio: 0.2,
-        motion: ScrollMotion(),
+        motion: const ScrollMotion(),
         children: [
           SlidableAction(
             onPressed: (BuildContext context) {
@@ -44,11 +46,24 @@ class ChatsListItem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset(
-                AppIconsTheme.sovuh,
-                fit: BoxFit.fill,
-                height: 42,
-                width: 42,
+              Stack(
+                children: <Widget>[
+                  Image.asset(
+                    AppIconsTheme.sovuh,
+                    fit: BoxFit.fill,
+                    height: 42,
+                    width: 42,
+                  ),
+                  if (isUnread)
+                    Container(
+                      width: 10,
+                      height: 10,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red,
+                      ),
+                    )
+                ],
               ),
               const SizedBox(width: 12),
               Text(

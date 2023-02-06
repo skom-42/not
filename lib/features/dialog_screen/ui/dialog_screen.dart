@@ -146,6 +146,8 @@ class _DialogScreenState extends State<DialogScreen> {
                                 height: 35,
                                 child: CupertinoTextField(
                                   controller: messageController,
+                                  textInputAction: TextInputAction.newline,
+                                  maxLines: 100,minLines: 1,
                                   padding: const EdgeInsets.only(
                                     left: 15,
                                     top: 2,

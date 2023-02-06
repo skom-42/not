@@ -11,6 +11,8 @@ class ChatListItemModel with _$ChatListItemModel {
     required String docId,
     required String plate,
     @JsonKey(defaultValue: []) required List readReceiptUsers,
+    @JsonKey(defaultValue: []) required List blocked,
+    CustomUser? user,
     CustomUser? toUser,
   }) = _ChatListItemModel;
 

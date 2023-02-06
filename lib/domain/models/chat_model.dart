@@ -10,6 +10,7 @@ class ChatModel with _$ChatModel {
   const factory ChatModel({
     List<String>? deleted,
     @JsonKey(defaultValue: []) required List<String> readReceipt,
+    @JsonKey(defaultValue: []) required List<String> blocked,
     required List<String> users,
   }) = _ChatModel;
 

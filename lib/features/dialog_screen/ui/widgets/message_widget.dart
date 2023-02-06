@@ -17,6 +17,7 @@ class MessageWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
             !message.isMyMessage ? MainAxisAlignment.start : MainAxisAlignment.end,
         children: <Widget>[
@@ -39,9 +40,15 @@ class MessageWidget extends StatelessWidget {
                 color: AppTheme.chatBubbleColor, isOwn: message.isMyMessage),
             child: Container(
               padding: const EdgeInsets.all(8),
-              child: Text(
-                message.content,
-                style: AppTextTheme.poppins14Regular.copyWith(color: AppTheme.lightColor),
+              child: Container(
+                constraints:
+                    BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 100),
+                child: Text(
+                  message.content,
+                  softWrap: true,
+                  style:
+                      AppTextTheme.poppins14Regular.copyWith(color: AppTheme.lightColor),
+                ),
               ),
             ),
           ),
