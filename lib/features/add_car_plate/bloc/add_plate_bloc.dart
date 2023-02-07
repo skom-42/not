@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:navigation/navigation.dart';
+import 'package:noty_mobile/core/localization/localization.dart';
 import 'package:noty_mobile/core_ui/src/dialogs/android_dialog/dialog_page.dart';
 import 'package:noty_mobile/data/repositories/auth_repository.dart';
+import 'package:noty_mobile/features/auth/login%20/ui/login_page.dart';
+import 'package:noty_mobile/features/home/home_page.dart';
 import 'package:noty_mobile/features/image_selector/image_selector_page.dart';
 
 part 'add_plate_event.dart';
@@ -62,6 +65,22 @@ class AddPlateBloc extends Bloc<AddPlateEvent, AddPlateState> {
         if (recognizedText.text.contains(firstString) ||
             recognizedText.text.contains(secondString)) {
           await _authRepository.updateVerification();
+        } else if (updatedPlate != null) {
+          bool isVerified = await _authRepository.checkForValidXml(plate: updatedPlate!);
+          if (isVerified) {
+            await _authRepository.updateVerification();
+          } else {
+            _appRouter.push(
+              DefaultDialog(
+                  title: 'Oh oh',
+                  message: AppLocalizations.ofGlobalContext(
+                    'Looks like that this car is not electric or plugin hybrid.',
+                  ),
+                  onOk: () {
+                    onDelete();
+                  }),
+            );
+          }
         }
         emit(InformationState(plate: updatedPlate));
       }
@@ -77,5 +96,12 @@ class AddPlateBloc extends Bloc<AddPlateEvent, AddPlateState> {
 
   Future<void> _onRouteBack(RouteBack event, Emitter<AddPlateState> emit) async {
     _appRouter.popWithResult(updatedPlate);
+  }
+
+  void onDelete() async {
+    await _authRepository.deleteUser();
+    _appRouter.pop();
+    _appRouter.popUntilPage(DashboardPage());
+    _appRouter.replace(LoginPage());
   }
 }

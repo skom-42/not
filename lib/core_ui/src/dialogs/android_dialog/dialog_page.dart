@@ -17,6 +17,7 @@ class DefaultDialog extends Page<void> {
     return DialogRoute<void>(
       settings: this,
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return DefaultDialogScreen(
           title: title,

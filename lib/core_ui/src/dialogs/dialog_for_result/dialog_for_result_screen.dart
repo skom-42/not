@@ -6,10 +6,12 @@ import 'package:noty_mobile/core/localization/localization.dart';
 class DialogForResultScreen extends StatelessWidget {
   final String title;
   final String message;
+  final bool isNeedSecondButton;
 
   const DialogForResultScreen({
     required this.title,
     required this.message,
+    this.isNeedSecondButton = true,
     Key? key,
   }) : super(key: key);
 
@@ -35,11 +37,11 @@ class DialogForResultScreen extends StatelessWidget {
   }
 
   Widget _rejectButton() {
-    return TextButton(
+    return isNeedSecondButton?  TextButton(
       child: const Text("No"),
       onPressed: () {
         appLocator<AppRouterDelegate>().popWithResult(false);
       },
-    );
+    ) : const SizedBox.shrink();
   }
 }

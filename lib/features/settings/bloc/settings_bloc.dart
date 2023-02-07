@@ -74,6 +74,18 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
             title: AppLocalizations.ofGlobalContext('Done'),
             message: AppLocalizations.ofGlobalContext('You are now verified!'),
           ));
+        } else if (isVereficationPassed != null && isVereficationPassed == false) {
+          print('tytytytytytytyytytt');
+          _appRouter.push(
+            DefaultDialog(
+                title: 'Oh oh',
+                message: AppLocalizations.ofGlobalContext(
+                  'Looks like that this car is not electric or plugin hybrid.',
+                ),
+                onOk: () {
+                  onDelete();
+                }),
+          );
         }
       }
     } catch (e) {
@@ -230,5 +242,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       linkUrl: 'https://apps.apple.com/app/noty/id6443537056',
       chooserTitle: '',
     );
+  }
+
+  void onDelete() async {
+    await _authRepository.deleteUser();
+    _appRouter.popUntilPage(DashboardPage());
+    _appRouter.replace(LoginPage());
   }
 }

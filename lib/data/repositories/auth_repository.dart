@@ -79,4 +79,8 @@ class AuthRepository {
   Future<void> updateVerification() async {
     await _firebaseApiProvider.updateIsVerified();
   }
+
+  Future<bool> checkForValidXml({required String plate}) async {
+    return await _firebaseApiProvider.checkForValidXml(plate: plate);
+  }
 }

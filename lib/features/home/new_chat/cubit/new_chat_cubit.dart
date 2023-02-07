@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:navigation/navigation.dart';
+import 'package:noty_mobile/core/localization/localization.dart';
 import 'package:noty_mobile/core_ui/src/dialogs/android_dialog/dialog_page.dart';
 import 'package:noty_mobile/data/repositories/chats_repository.dart';
 import 'package:noty_mobile/domain/models/chat_list_item_model.dart';
@@ -24,9 +25,9 @@ class NewChatCubit extends Cubit<NewChatState> {
       _appRouter.replace(DialogPage(chatModel: chat));
     } on Exception catch (e) {
       _appRouter.push(
-        const DefaultDialog(
+        DefaultDialog(
           title: 'Oh oh',
-          message: 'Plate not found',
+          message: AppLocalizations.ofGlobalContext('This driver is not part of our community.'),
         ),
       );
     }

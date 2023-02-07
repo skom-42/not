@@ -43,6 +43,14 @@ class _FirstStateState extends State<FirstState> {
             width: 133,
           ),
           const SizedBox(height: 52),
+          Text(
+            AppLocalizations.of(context).value('Enter driver`s car plate number'),
+            style: AppTextTheme.poppins17SemiBold.copyWith(
+              color: AppTheme.lightColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 30),
           AppTextField(
             controller: controller,
             onChange: (String value) {

@@ -18,10 +18,8 @@ import 'package:noty_mobile/features/auth/login%20/ui/login_page.dart';
 
 class FirebaseApiProvider {
   static final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
-  static final FirebaseFirestore _firestoreInstance =
-      FirebaseFirestore.instance;
-  static final FirebaseMessaging _firebaseMessagingInstance =
-      FirebaseMessaging.instance;
+  static final FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
+  static final FirebaseMessaging _firebaseMessagingInstance = FirebaseMessaging.instance;
 
   User? currentUser;
   CustomUser? customUser;
@@ -37,8 +35,7 @@ class FirebaseApiProvider {
     required String surName,
   }) async {
     try {
-      final UserCredential newUser =
-          await _firebaseAuthInstance.createUserWithEmailAndPassword(
+      final UserCredential newUser = await _firebaseAuthInstance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -51,8 +48,7 @@ class FirebaseApiProvider {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         throw CustomException(
-          errorMessage:
-              'Questo indirizzo email è già utilizzato da un altro account',
+          errorMessage: 'Questo indirizzo email è già utilizzato da un altro account',
         );
       } else {
         throw CustomException(
@@ -76,8 +72,7 @@ class FirebaseApiProvider {
 
   Future<void> logIn({required String email, required String password}) async {
     try {
-      final UserCredential userCredential =
-          await _firebaseAuthInstance.signInWithEmailAndPassword(
+      final UserCredential userCredential = await _firebaseAuthInstance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -110,8 +105,7 @@ class FirebaseApiProvider {
 
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     final String? accessToken = googleAuth?.accessToken;
     final String? idToken = googleAuth?.idToken;
     if (accessToken == null || idToken == null) {
@@ -174,8 +168,7 @@ class FirebaseApiProvider {
     }
   }
 
-  Future<void> _createNewUser(
-      {required String? name, required String? surname}) async {
+  Future<void> _createNewUser({required String? name, required String? surname}) async {
     final String? token = await _firebaseMessagingInstance.getToken();
     _firestoreInstance.collection("Users").doc(_getUsername()).set(
       <String, dynamic>{
@@ -230,10 +223,8 @@ class FirebaseApiProvider {
 
   Future<CustomUser?> getUserByPlate({required String plate}) async {
     try {
-      final db = await _firestoreInstance
-          .collection("Users")
-          .where('plate', isEqualTo: plate)
-          .get();
+      final db =
+          await _firestoreInstance.collection("Users").where('plate', isEqualTo: plate).get();
 
       if (db.docs.isNotEmpty) {
         return CustomUser.fromJson(db.docs.first.data());
@@ -260,8 +251,7 @@ class FirebaseApiProvider {
   }
 
   Future<CustomUser?> getUserInChat({required ChatModel chat}) async {
-    final String name =
-        chat.users.firstWhere((element) => element != _getUsername());
+    final String name = chat.users.firstWhere((element) => element != _getUsername());
     final data = await _firestoreInstance.collection('Users').doc(name).get();
     final userData = data.data();
     if (userData != null) {
@@ -271,8 +261,7 @@ class FirebaseApiProvider {
   }
 
   Future<CustomUser?> getUserAttributes() async {
-    final b =
-        await _firestoreInstance.collection('Users').doc(_getUsername()).get();
+    final b = await _firestoreInstance.collection('Users').doc(_getUsername()).get();
 
     try {
       if (b.data() != null) {
@@ -314,12 +303,9 @@ class FirebaseApiProvider {
   }
 
   Future<bool> getPlate({String? userName}) async {
-    final DocumentSnapshot result = await _firestoreInstance
-        .collection('Users')
-        .doc(userName ?? _getUsername())
-        .get();
-    final Map<String, dynamic> parsedData =
-        result.data() as Map<String, dynamic>;
+    final DocumentSnapshot result =
+        await _firestoreInstance.collection('Users').doc(userName ?? _getUsername()).get();
+    final Map<String, dynamic> parsedData = result.data() as Map<String, dynamic>;
     final String? plate = parsedData['plate'] as String?;
     return plate != null;
   }
@@ -329,8 +315,7 @@ class FirebaseApiProvider {
     try {
       final DocumentSnapshot snapshot =
           await _firestoreInstance.collection("Users").doc(username).get();
-      final Map<String, dynamic> parsedData =
-          snapshot.data() as Map<String, dynamic>;
+      final Map<String, dynamic> parsedData = snapshot.data() as Map<String, dynamic>;
       return parsedData['plate'] as String?;
     } catch (e) {
       print('%getUserPlate error% ${e.toString()}');
@@ -342,9 +327,7 @@ class FirebaseApiProvider {
     chatStream?.close();
     chatStream = null;
     chatStream = StreamController<List<ChatListItemModel>>();
-    final db = _firestoreInstance
-        .collection("Chats")
-        .where("users", arrayContains: _getUsername());
+    final db = _firestoreInstance.collection("Chats").where("users", arrayContains: _getUsername());
     db.snapshots().listen((event) async {
       final queryCount = event.docs.length;
       if (queryCount >= 1) {
@@ -384,8 +367,7 @@ class FirebaseApiProvider {
   Future<ChatListItemModel> createChat({
     required String plate,
   }) async {
-    final CustomUser? recepient =
-        await getUserByPlate(plate: plate.toUpperCase().trim());
+    final CustomUser? recepient = await getUserByPlate(plate: plate.toUpperCase().trim());
     if (recepient == null) {
       throw CustomException(
         errorMessage: AppLocalizations.ofGlobalContext(
@@ -418,8 +400,7 @@ class FirebaseApiProvider {
   Future<ChatListItemModel> getChat({
     required String plate,
   }) async {
-    final CustomUser? recepient =
-        await getUserByPlate(plate: plate.toUpperCase().trim());
+    final CustomUser? recepient = await getUserByPlate(plate: plate.toUpperCase().trim());
     if (recepient == null) {
       throw CustomException(
         errorMessage: AppLocalizations.ofGlobalContext(
@@ -462,8 +443,7 @@ class FirebaseApiProvider {
     print('%chat.docId% ${chat.docId}');
     _firestoreInstance.collection("Chats").doc(chat.docId).update({
       "blocked": FieldValue.arrayUnion([_getUsername()]),
-      "deleted": FieldValue.arrayUnion(
-          [_getUsername(), chat.toUser?.email ?? "Unknown"])
+      "deleted": FieldValue.arrayUnion([_getUsername(), chat.toUser?.email ?? "Unknown"])
     });
   }
 
@@ -478,10 +458,7 @@ class FirebaseApiProvider {
     required String message,
     required ChatListItemModel chat,
   }) async {
-    _firestoreInstance
-        .collection("Chats")
-        .doc(chat.docId)
-        .update({"deleted": []});
+    _firestoreInstance.collection("Chats").doc(chat.docId).update({"deleted": []});
     var notifPayload = {
       "to": chat.toUser?.notificationToken ?? "",
       "data": {
@@ -550,10 +527,7 @@ class FirebaseApiProvider {
     chatMessagesStream?.close();
     chatMessagesStream = null;
     chatMessagesStream = StreamController<List<ChatMessage>>();
-    final db = await _firestoreInstance
-        .collection("Chats")
-        .doc(chatListItemModel.docId)
-        .get();
+    final db = await _firestoreInstance.collection("Chats").doc(chatListItemModel.docId).get();
 
     if (db.exists) {
       currentChat = db.reference;
@@ -639,31 +613,42 @@ class FirebaseApiProvider {
     return updatedPlates;
   }
 
-// Future<bool> checkForValidXml({required String plate}) async {
-//   final String? plate = customUser?.plate;
-//   if (plate != null) {
-//     try {
-//       final http.Response response = await http.post(
-//         Uri.parse('http://www.targa.co.it/api/reg.asmx/CheckItaly'),
-//         headers: <String, String>{
-//           'Content-Type': 'application/json; charset=UTF-8',
-//         },
-//         body: jsonEncode(<String, String>{
-//           'RegistrationNumber': plate,
-//           'username': 'noty',
-//         }),
-//       );
-//       print('VEREFY RESPONCE');
-//       final String xmlResponse = response.body.toString();
-//       print(xmlResponse);
-//
-//       if (xmlResponse.contains('"CurrentTextValue": "Elettrica"')) {
-//         return true;
-//       }
-//     } catch (e) {
-//       throw Exception(e.toString());
-//     }
-//   }
-//   return false;
-// }
+  Future<bool> checkForValidXml({required String plate}) async {
+    try {
+      final http.Response response = await http.post(
+        Uri.parse('http://www.targa.co.it/api/reg.asmx/CheckItaly'),
+        headers: <String, String>{
+          "Content-Type": "application/x-www-form-urlencoded",
+          'Host': 'www.targa.co.it',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Origin': 'http://www.targa.co.it',
+          'Upgrade-Insecure-Requests': '1',
+        },
+        body: <String, String>{
+          'RegistrationNumber': plate.toString(),
+          'username': 'noty',
+        },
+      );
+      final String xmlResponse = response.body.toString();
+
+      print('responseresponseresponseresponseresponseresponseresponse');
+      print(xmlResponse);
+      print('responseresponseresponseresponseresponseresponseresponse');
+
+      if (xmlResponse.contains('"CurrentTextValue": "Elettrica"')) {
+        print(
+            '"CurrentTextValue": "Elettrica""CurrentTextValue": "Elettrica""CurrentTextValue": "Elettrica"');
+        print(
+            '"CurrentTextValue": "Elettrica""CurrentTextValue": "Elettrica""CurrentTextValue": "Elettrica"');
+        print(
+            '"CurrentTextValue": "Elettrica""CurrentTextValue": "Elettrica""CurrentTextValue": "Elettrica"');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
