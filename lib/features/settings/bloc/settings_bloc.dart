@@ -75,7 +75,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
             message: AppLocalizations.ofGlobalContext('You are now verified!'),
           ));
         } else if (isVereficationPassed != null && isVereficationPassed == false) {
-          print('tytytytytytytyytytt');
           _appRouter.push(
             DefaultDialog(
                 title: 'Oh oh',

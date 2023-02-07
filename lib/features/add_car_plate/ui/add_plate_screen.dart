@@ -13,6 +13,8 @@ import 'package:noty_mobile/core_ui/src/widgets/app_background_image.dart';
 import 'package:noty_mobile/core_ui/src/widgets/app_button.dart';
 import 'package:noty_mobile/core_ui/src/widgets/page_app_bar.dart';
 import 'package:noty_mobile/features/add_car_plate/bloc/add_plate_bloc.dart';
+import 'package:noty_mobile/features/image_selector/image_selector_page.dart';
+import 'package:noty_mobile/features/image_selector/image_selector_screen.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../core_ui/src/theme/app_icon_theme.dart';
 import '../../../core_ui/src/widgets/unfocuser.dart';
@@ -64,8 +66,8 @@ class _AddPlateScreenState extends State<AddPlateScreen> {
                     onPressed: (String value) {
                       if (value.isNotEmpty) {
                         context.read<AddPlateBloc>().add(ConfirmPlate(
-                              plate: value.trim().toUpperCase(),
-                            ));
+                          plate: value.trim().toUpperCase(),
+                        ));
                         showDialog(context);
                       }
                     },
@@ -122,7 +124,12 @@ class _AddPlateScreenState extends State<AddPlateScreen> {
                           text: AppLocalizations.of(context).value('Take a photo'),
                           backgroundColor: AppTheme.buttonColor,
                           onPressed: () {
-                            context.read<AddPlateBloc>().add(UploadPhoto());
+                            showModalBottomSheet(context: context, isScrollControlled: false,backgroundColor: Colors.transparent, builder: (BuildContext _) {
+                              return ImageSelectorScreen(onClose: (image) {
+                                context.read<AddPlateBloc>().add(UploadPhoto(image));
+
+                              },);
+                            });
                           },
                         ),
                         const SizedBox(height: 18),
@@ -223,7 +230,10 @@ showDialog(BuildContext context) {
           topRight: Radius.circular(20),
         ),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.90,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.90,
           child: AppBackgroundImage(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -243,11 +253,11 @@ showDialog(BuildContext context) {
                   const SizedBox(height: 40),
                   Text(
                     'Per verificarsi occorre scattare una foto solo della '
-                    'sezione 3 del libretto. Dove non contiene nessuna '
-                    'informazione personale ma solo quelle necessarie al '
-                    'corretto funzionamento all\'app. Nota: Non salviamo o '
-                    'condividiamo la foto del libretto. La verifica viene '
-                    'effettuata direttamente sul dispositivo stesso.',
+                        'sezione 3 del libretto. Dove non contiene nessuna '
+                        'informazione personale ma solo quelle necessarie al '
+                        'corretto funzionamento all\'app. Nota: Non salviamo o '
+                        'condividiamo la foto del libretto. La verifica viene '
+                        'effettuata direttamente sul dispositivo stesso.',
                     style: AppTextTheme.poppins17SemiBold.copyWith(
                       color: AppTheme.lightColor,
                     ),

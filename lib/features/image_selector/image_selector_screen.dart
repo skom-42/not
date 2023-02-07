@@ -14,22 +14,27 @@ import 'bloc/image_selector_event.dart';
 import 'bloc/image_selector_state.dart';
 
 class ImageSelectorScreen extends StatelessWidget {
+  final Function onClose;
+
   const ImageSelectorScreen({
+    required this.onClose,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 140,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-        child: Scaffold(
-          backgroundColor: const Color.fromRGBO(195, 213, 215, 1),
-          body: BlocProvider<ImageSelectorBloc>(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
+            color: AppTheme.lightColor,
+          ),
+          child: BlocProvider<ImageSelectorBloc>(
             create: (BuildContext context) => ImageSelectorBloc(
               appRouter: appLocator.get<AppRouterDelegate>(),
             ),
@@ -54,8 +59,10 @@ class ImageSelectorScreen extends StatelessWidget {
                               ),
                               onPressed: () {
                                 BlocProvider.of<ImageSelectorBloc>(context).add(
-                                  SelectGalleryImage(),
+                                  SelectGalleryImage(onClose: onClose),
                                 );
+                                Navigator.pop(context);
+
                               },
                             ),
                             const AppDivider(),
@@ -66,8 +73,10 @@ class ImageSelectorScreen extends StatelessWidget {
                               ),
                               onPressed: () {
                                 BlocProvider.of<ImageSelectorBloc>(context)
-                                    .add(SelectCameraImage());
+                                    .add(SelectCameraImage(onClose: onClose));
+                                Navigator.pop(context);
                               },
+
                             ),
                           ],
                         ),
@@ -81,7 +90,7 @@ class ImageSelectorScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

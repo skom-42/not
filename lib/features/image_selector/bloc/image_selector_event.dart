@@ -4,6 +4,14 @@ abstract class ImageSelectorEvent {}
 
 class RouteBack extends ImageSelectorEvent {}
 
-class SelectCameraImage extends ImageSelectorEvent {}
+class SelectCameraImage extends ImageSelectorEvent {
+  final Function onClose;
 
-class SelectGalleryImage extends ImageSelectorEvent {}
+  SelectCameraImage({required this.onClose});
+}
+
+class SelectGalleryImage extends ImageSelectorEvent {
+  final Function onClose;
+
+  SelectGalleryImage({required this.onClose});
+}

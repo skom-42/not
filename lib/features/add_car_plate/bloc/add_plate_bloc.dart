@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:navigation/navigation.dart';
@@ -56,7 +59,7 @@ class AddPlateBloc extends Bloc<AddPlateEvent, AddPlateState> {
 
   Future<void> _onUploadPhoto(UploadPhoto event, Emitter<AddPlateState> emit) async {
     try {
-      final image = await _appRouter.pushForResult(ImageSelectorPage());
+      final image = event.file;
       if (image != null) {
         final inputImage = InputImage.fromFile(image);
         final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);

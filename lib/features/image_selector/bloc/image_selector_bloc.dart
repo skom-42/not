@@ -24,12 +24,15 @@ class ImageSelectorBloc extends Bloc<ImageSelectorEvent, ImageSelectorState> {
 
     if (event is SelectCameraImage) {
       final File? image = await _getImage(ImageSource.camera);
-      appRouter.popWithResult(image);
+      // appRouter.popWithResult(image);
+      event.onClose(image);
     }
 
     if (event is SelectGalleryImage) {
       final File? image = await _getImage(ImageSource.gallery);
-      appRouter.popWithResult(image);
+      // appRouter.popWithResult(image);
+      event.onClose(image);
+
     }
   }
 

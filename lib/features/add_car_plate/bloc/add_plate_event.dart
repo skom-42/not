@@ -12,4 +12,9 @@ class ConfirmPlate implements AddPlateEvent {
 
 class RouteBack implements AddPlateEvent {}
 
-class UploadPhoto implements AddPlateEvent {}
+class UploadPhoto implements AddPlateEvent {
+  final File? file;
+
+  UploadPhoto(this.file);
+
+}
